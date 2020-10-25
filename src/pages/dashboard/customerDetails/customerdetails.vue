@@ -1,0 +1,128 @@
+<template>
+  <div class="analysis" style="margin-bottom:20px;">
+    <a-row style="margin-top: 0" :gutter="[24, 24]">
+      <a-col>
+        <div class="cus-top">
+            <div class="cus-box">
+                <div>
+                    <span>客户名称：{{cusInfo.name}}</span>
+                </div>
+                <div>
+                    <span>性别：{{cusInfo.sex.message}}</span>
+                </div>
+                <div>
+                    <span>品牌名称：{{cusInfo.brandName}}</span>
+                </div>
+                <div>
+                    <span>业态：{{cusInfo.format}}</span>
+                </div>
+                <div>
+                    <span>需求面积：{{cusInfo.demandArea}} 平方米</span>
+                </div>
+                <div style="width: 48%;">
+                    <span>需求区域：{{cusInfo.demandAddress}}</span>
+                </div>
+            </div>
+            <div>
+                <span >电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
+                <a-button style="margin-left:15px;" v-if="cusInfo.isViewPhone" type='primary'>查看电话号码</a-button>
+            </div>
+        </div>
+      </a-col>
+      <a-col>
+        <div style="background:#fff;padding:20px 12px;">
+          <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="cusInfo.followUpRecordDtoList">
+          </a-table>
+        </div>
+      </a-col>
+    </a-row>
+  </div>
+</template>
+
+<script>
+import {request, METHOD} from '@/utils/request'
+export default {
+  name: 'customer',
+  data () {
+    return {
+      loading: true,
+      tabLoading: false,
+      staffFrom: {
+        page: '1',
+        name: '',
+        pageSize: 10
+      },
+      cusInfo: {},
+      staffList: [
+        {
+          title: '跟进人',
+          dataIndex: 'name',
+          key: 'name',
+          width: 150
+        },
+        {
+          title: '跟进时间',
+          dataIndex: 'followUpDate',
+          key: 'followUpDate',
+          width: 200
+        },
+        {
+          title: '跟进记录',
+          dataIndex: 'remarks',
+          key: 'remarks'
+        }
+      ],
+      staffData: [],
+      pagination: {
+        defaultPageSize: 10,
+        showSizeChanger: true,
+        showTotal: total => `共${total}条数据`,
+        pageSizeOption: ['5', '10', '15', '20'],
+        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize)
+      }
+    }
+  },
+  created() {
+    setTimeout(() => this.loading = !this.loading, 1000)
+    this.getStaff(1)
+  },
+  methods: {
+    getStaff(page, pageSize) {
+      this.tabLoading = true
+      this.staffFrom.page = page
+      this.staffFrom.pageSize = pageSize || 10
+      request('/api/backend/customer/findFollowUpRecord.json', METHOD.GET,
+        {
+          EQ_customerId: sessionStorage.getItem('cusId'),
+          page: this.staffFrom.page = page,
+          size: this.staffFrom.pageSize
+        }).then(res => {
+          if (res.status === 200 && res.data.code === '200') {
+            let reg = /^(\d{3})\d{4}(\d{4})$/
+            this.cusInfo = res.data.data
+            this.cusInfo.hidPhone = this.cusInfo.phone.replace(reg, '$1****$2')
+            this.tabLoading = false
+          } else {
+            this.$message.error(res.data.message)
+            this.tabLoading = false
+          }
+        })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.cus-top {
+    background:#fff;
+    padding:12px;
+    .cus-box {
+        display: flex;
+        flex-wrap: wrap;
+        div {
+            width: 25%;
+            margin-bottom: 15px;
+        }
+    }
+}
+</style>

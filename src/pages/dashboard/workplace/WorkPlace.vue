@@ -1,0 +1,190 @@
+<template>
+  <page-layout :avatar="currUser.avatar">
+    <div slot="headerContent">
+      ssss
+    </div>
+    <template>
+      <a-row style="margin: 0 -12px">
+        <a-col style="padding:0 12px 12px 12px;margin-bottom:20px;background:#fff;" >
+          <a-tabs>
+            <a-tab-pane key="1" tab="销售排行榜">
+              <a-card-grid style="width:25%;margin-right: 60px;" v-for="(item,index) in projects" :key="index">
+                <a-card :bordered="false" :body-style="{padding: 0}">
+                  <a-card-meta>
+                    <div slot="title" class="card-title">
+                      <p class="ran-title">{{item.title}}</p>
+                    </div>
+                  </a-card-meta>
+                  <div class="project-item" v-for="(it,index) in item.list" :key="index">
+                    <div class="ran-caid" :class="index < 2 ? '' : 'ran-caid-last'">{{index+1}}</div>
+                    <div class="ran-name">{{it.name}}</div>
+                    <div>{{it.num}}</div>
+                  </div>
+                </a-card>
+              </a-card-grid>
+              <!-- <div class="ranking">
+                <div class="ran-box">
+                  <p class="ran-title">客户录入排行榜</p>
+                  <div>
+
+                  </div>
+                </div>
+              </div> -->
+            </a-tab-pane>
+            <div slot="tabBarExtraContent">
+              <a-radio-group default-value="a" button-style="solid" style="margin-right:15px;">
+                <a-radio-button value="a">
+                  今日
+                </a-radio-button>
+                <a-radio-button value="b">
+                  本周
+                </a-radio-button>
+                <a-radio-button value="c">
+                  本月
+                </a-radio-button>
+                <a-radio-button value="d">
+                  全年
+                </a-radio-button>
+              </a-radio-group>
+             <a-range-picker />
+            </div>
+          </a-tabs>
+        </a-col>
+        <a-col style="padding: 0 12px" >
+          <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 0}">
+            <div>
+              <a-card-grid :key="i" v-for="(item, i) in projects">
+                <a-card :bordered="false" :body-style="{padding: 0}">
+                  <a-card-meta :description="item.desc">
+                    <div slot="title" class="card-title">
+                      <a-avatar size="small" :src="item.logo" />
+                      <span>Alipay</span>
+                    </div>
+                  </a-card-meta>
+                  <div class="project-item">
+                    <a class="group" href="/#/">科学搬砖组</a>
+                    <span class="datetime">9小时前</span>
+                  </div>
+                </a-card>
+              </a-card-grid>
+            </div>
+          </a-card>
+        </a-col>
+      </a-row>
+    </template>
+  </page-layout>
+</template>
+
+<script>
+import PageLayout from '@/layouts/PageLayout'
+import {mapState} from 'vuex'
+// import {request, METHOD} from '@/utils/request'
+import 'moment/locale/zh-cn';
+import moment from 'moment';
+moment.locale('zh-cn');
+
+export default {
+  name: 'WorkPlace',
+  components: {PageLayout},
+  // i18n: require('./i18n'),
+  data () {
+    return {
+      projects: [
+        {
+          title: '客户录入排行榜',
+          list: [
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            }
+          ]
+        },
+        {
+          title: '店铺录入排行榜',
+          list: [
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            },
+            {
+              name: '员工1',
+              num: 200
+            }
+          ]
+        }
+      ],
+      loading: true,
+      activities: [],
+      teams: [],
+      welcome: {
+        timeFix: '',
+        message: ''
+      }
+    }
+  },
+  computed: {
+    ...mapState('account', {currUser: 'user'}),
+    ...mapState('setting', ['lang'])
+  },
+  created() {
+  },
+  methods: {
+    // get
+  }
+}
+</script>
+
+<style lang="less">
+@import "index";
+.ranking {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  // .ran
+}
+.project-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  .ran-caid {
+    width: 17px;
+    height: 17px;
+    background-color: rgb(49, 70, 89);
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 15px;
+    margin-top: 3px;
+  }
+  .ran-name {
+    width: 79%;
+  }
+  .project-item:last-child {
+    margin-bottom: 0;
+  }
+  .ran-caid-last {
+    background-color: rgb(240, 242, 245);
+    color: #666;
+  }
+}
+</style>
