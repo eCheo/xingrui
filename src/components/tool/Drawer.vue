@@ -116,7 +116,7 @@ export default {
     text-align: center;
     transition: all 0.5s;
     cursor: pointer;
-    top: 200px;
+    top: 265px;
     z-index: 100;
     .handler {
       height: 40px;

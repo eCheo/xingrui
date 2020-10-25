@@ -8,7 +8,7 @@
         <a-col style="padding:0 12px 12px 12px;margin-bottom:20px;background:#fff;" >
           <a-tabs>
             <a-tab-pane key="1" tab="销售排行榜">
-              <a-card-grid style="width:25%;margin-right: 60px;" v-for="(item,index) in projects" :key="index">
+              <a-card-grid style="width:25%;margin-right: 60px;margin-bottom: 10px;" v-for="(item,index) in projects" :key="index">
                 <a-card :bordered="false" :body-style="{padding: 0}">
                   <a-card-meta>
                     <div slot="title" class="card-title">
@@ -17,36 +17,31 @@
                   </a-card-meta>
                   <div class="project-item" v-for="(it,index) in item.list" :key="index">
                     <div class="ran-caid" :class="index < 2 ? '' : 'ran-caid-last'">{{index+1}}</div>
-                    <div class="ran-name">{{it.name}}</div>
-                    <div>{{it.num}}</div>
+                    <div class="ran-name">{{it.memberName}} <span style="color:#f5222d;" v-if="it.isDelete">已删除</span></div>
+                    <div>{{it.count}}</div>
+                  </div>
+                  <div v-if="item.list.length === 0">
+                    暂无数据
                   </div>
                 </a-card>
               </a-card-grid>
-              <!-- <div class="ranking">
-                <div class="ran-box">
-                  <p class="ran-title">客户录入排行榜</p>
-                  <div>
-
-                  </div>
-                </div>
-              </div> -->
             </a-tab-pane>
             <div slot="tabBarExtraContent">
-              <a-radio-group default-value="a" button-style="solid" style="margin-right:15px;">
-                <a-radio-button value="a">
+              <a-radio-group default-value="1" v-model="day"  @change='getRanking' button-style="solid" style="margin-right:15px;">
+                <a-radio-button value="1">
                   今日
                 </a-radio-button>
-                <a-radio-button value="b">
+                <a-radio-button value="2">
                   本周
                 </a-radio-button>
-                <a-radio-button value="c">
+                <a-radio-button value="3">
                   本月
                 </a-radio-button>
-                <a-radio-button value="d">
+                <a-radio-button value="4">
                   全年
                 </a-radio-button>
               </a-radio-group>
-             <a-range-picker />
+             <a-range-picker @change='timeChange' />
             </div>
           </a-tabs>
         </a-col>
@@ -78,7 +73,7 @@
 <script>
 import PageLayout from '@/layouts/PageLayout'
 import {mapState} from 'vuex'
-// import {request, METHOD} from '@/utils/request'
+import {request, METHOD} from '@/utils/request'
 import 'moment/locale/zh-cn';
 import moment from 'moment';
 moment.locale('zh-cn');
@@ -139,7 +134,10 @@ export default {
       welcome: {
         timeFix: '',
         message: ''
-      }
+      },
+      day: '1',
+      startTime: '',
+      endTime: ''
     }
   },
   computed: {
@@ -149,7 +147,42 @@ export default {
   created() {
   },
   methods: {
-    // get
+    getRanking() {
+      request('/api/backend/customer/indexStatistics.json', METHOD.GET, {
+        startTime: this.startTime,
+        endTime: this.endTime
+      }).then(res => {
+          if (res.status === 200 && res.data.code === '200') {
+            this.projects[0].list = res.data.data.customer
+            this.projects[1].list = res.data.data.shop
+          } else {
+            this.$message.error(res.data.message)
+          }
+        })
+    },
+    timeChange(date, dateString) {
+      this.startTime = dateString[0]
+      this.endTime = dateString[1]
+      if (dateString[0] !== '') {
+        this.getRanking();
+      }
+    }
+  },
+  watch: {
+    day:{
+      handler() {
+        request('/api/backend/customer/indexStatistics.json', METHOD.GET, {
+          dateType: this.day
+        }).then(res => {
+            if (res.status === 200 && res.data.code === '200') {
+              this.projects[0].list = res.data.data.customer
+              this.projects[1].list = res.data.data.shop
+            } else {
+              this.$message.error(res.data.message)
+            }
+          })
+      }, immediate: true
+    }
   }
 }
 </script>
