@@ -48,18 +48,22 @@
         <a-col style="padding: 0 12px" >
           <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 0}">
             <div>
-              <a-card-grid :key="i" v-for="(item, i) in projects">
+              <a-card-grid :key="i" v-for="(item, i) in projects" style="margin:15px 15px 0 0;">
                 <a-card :bordered="false" :body-style="{padding: 0}">
                   <a-card-meta :description="item.desc">
                     <div slot="title" class="card-title">
-                      <a-avatar size="small" :src="item.logo" />
-                      <span>Alipay</span>
+                      <span>录入店铺数</span>
                     </div>
                   </a-card-meta>
-                  <div class="project-item">
-                    <a class="group" href="/#/">科学搬砖组</a>
-                    <span class="datetime">9小时前</span>
-                  </div>
+                  <chart-card :loading="loading" :title="$t('visits')" total="￥ 189,345">
+                    <a-tooltip :title="$t('introduce')" slot="action">
+                      <a-icon type="info-circle-o" />
+                    </a-tooltip>
+                    <div>
+                      <mini-area />
+                    </div>
+                    <div slot="footer">{{$ta('daily|visits', 'p')}}<span> 123,4</span></div>
+                  </chart-card>
                 </a-card>
               </a-card-grid>
             </div>
@@ -72,6 +76,9 @@
 
 <script>
 import PageLayout from '@/layouts/PageLayout'
+import ChartCard from '../../../components/card/ChartCard'
+import MiniArea from '../../../components/chart/MiniArea'
+// import MiniBar from '../../../components/chart/MiniBar'
 import {mapState} from 'vuex'
 import {request, METHOD} from '@/utils/request'
 import 'moment/locale/zh-cn';
@@ -80,7 +87,7 @@ moment.locale('zh-cn');
 
 export default {
   name: 'WorkPlace',
-  components: {PageLayout},
+  components: {PageLayout, ChartCard, MiniArea},
   // i18n: require('./i18n'),
   data () {
     return {
@@ -145,6 +152,7 @@ export default {
     ...mapState('setting', ['lang'])
   },
   created() {
+     setTimeout(() => this.loading = !this.loading, 1000)
   },
   methods: {
     getRanking() {
