@@ -48,21 +48,21 @@
         <a-col style="padding: 0 12px" >
           <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 0}">
             <div>
-              <a-card-grid :key="i" v-for="(item, i) in projects" style="margin:15px 15px 0 0;">
+              <a-card-grid :key="i" v-for="(item, i) in mbarList" style="margin:15px 15px 0 0;">
                 <a-card :bordered="false" :body-style="{padding: 0}">
                   <a-card-meta :description="item.desc">
                     <div slot="title" class="card-title">
-                      <span>录入店铺数</span>
+                      <span>{{item.title}}</span>
                     </div>
                   </a-card-meta>
-                  <chart-card :loading="loading" :title="$t('visits')" total="￥ 189,345">
+                  <chart-card :loading="loading" :total="item.num">
                     <a-tooltip :title="$t('introduce')" slot="action">
                       <a-icon type="info-circle-o" />
                     </a-tooltip>
                     <div>
                       <mini-area />
                     </div>
-                    <div slot="footer">{{$ta('daily|visits', 'p')}}<span> 123,4</span></div>
+                    <!-- <div slot="footer">{{$ta('daily|visits', 'p')}}<span> 123,4</span></div> -->
                   </chart-card>
                 </a-card>
               </a-card-grid>
@@ -144,7 +144,21 @@ export default {
       },
       day: '1',
       startTime: '',
-      endTime: ''
+      endTime: '',
+      mbarList: [
+        {
+          title: '录入店铺数',
+          num: 0
+        },
+        {
+          title: '录入客户数',
+          num: 0
+        },
+        {
+          title: '员工数',
+          num: 0
+        }
+      ]
     }
   },
   computed: {
@@ -163,6 +177,9 @@ export default {
           if (res.status === 200 && res.data.code === '200') {
             this.projects[0].list = res.data.data.customer
             this.projects[1].list = res.data.data.shop
+            this.mbarList[0].num = res.data.data.shopCountStatistics
+            this.mbarList[1].num = res.data.data.customerCountStatistics
+            this.mbarList[2].num = res.data.data.memberCountStatistics
           } else {
             this.$message.error(res.data.message)
           }
@@ -227,5 +244,8 @@ export default {
     background-color: rgb(240, 242, 245);
     color: #666;
   }
+}
+.ant-card-grid {
+  width: 25%;
 }
 </style>
