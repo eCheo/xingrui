@@ -205,6 +205,8 @@ export default {
       }
     },
     createStaff() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
       this.editLoading = true
       request('/api/backend/member/create.json', METHOD.POST, this.form).then(res => {
           if (res.status === 200 && res.data.code === '200') {
@@ -217,8 +219,12 @@ export default {
             this.editLoading = false
           }
         })
+        }
+      })
     },
     updataStaff() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
       this.editLoading = true
       request('/api/backend/member/update.json', METHOD.POST, this.form).then(res => {
           if (res.status === 200 && res.data.code === '200') {
@@ -231,6 +237,8 @@ export default {
             this.editLoading = false
           }
         })
+        }
+      })
     },
     deleteStaff(data) {
       request('/api/backend/member/delete.json', METHOD.POST, {id: data.id}).then(res => {

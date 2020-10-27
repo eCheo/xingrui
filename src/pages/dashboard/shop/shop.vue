@@ -5,25 +5,39 @@
         <div class="cas-content" style="background:#fff;padding:12px 107px;">
             <div>
                 <span>业主名称：</span>
-                <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
+                <a-input v-model="staffFrom.LIKE_name" style="width:300px;" placeholder="请输入业主名称" />
             </div>
             <div>
                 <span>付款方式：</span>
-                <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input v-model="staffFrom.EQ_paymentMethod" style="width:300px;" placeholder="付款方式" />
             </div>
             <div>
                 <span>是否已租：</span>
-                <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+                <a-select v-model="staffFrom.EQ_isRent" style="width:300px;">
+                  <a-select-option :value="item.value" v-for="(item, index) in isRentList" :key="index">
+                    {{item.label}}
+                  </a-select-option>
+                </a-select>
+            </div>
+            <div>
+                <span>区域位置：</span>
+                <a-input v-model="staffFrom.LIKE_area" style="width:300px;" placeholder="请输入区域位置" />
+            </div>
+            <div>
+               <span>面积：</span>
+                <a-input v-model="staffFrom.GTE_areaSize" style="width:150px;" placeholder="大于" />
+                <span>~</span>
+                <a-input v-model="staffFrom.LTE_areaSize" style="width:150px;" placeholder="小于" />
             </div>
             <div>
                 <span>租金区间：</span>
-                <a-input v-model="staffFrom.format" style="width:150px;" placeholder="请输入业态" />
+                <a-input v-model="staffFrom.GTE_money" style="width:150px;" placeholder="大于" />
                 <span>~</span>
-                <a-input v-model="staffFrom.format" style="width:150px;" placeholder="请输入业态" />
+                <a-input v-model="staffFrom.LTE_money" style="width:150px;" placeholder="小于" />
                 <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">
                     查询
                 </a-button>
-                <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
+                <a-button @click="$router.push('/Dashboard/addshop')" type="primary" style="margin-left: 15px;">
                     添加客户
                 </a-button>
             </div>
@@ -200,18 +214,22 @@ export default {
       editModal: false,
       staffFrom: {
         page: '1',
-        name: '',
+        LIKE_name: '',
         pageSize: 10,
-        areaLarge: '',
-        areaSmall: '',
-        format: ''
+        EQ_paymentMethod: '',
+        LIKE_area: '',
+        GTE_areaSize: '',
+        LTE_areaSize: '',
+        EQ_isRent: '',
+        GTE_money: "",
+        LTE_money: ""
       },
       staffList: [
         {
           title: '客户名称',
           dataIndex: 'name',
           key: 'name',
-          width: 138
+          width: 118
         },
         {
           title: '电话号码',
@@ -339,7 +357,21 @@ export default {
         openRoom: '',
         paymentMethod: ''
       },
-      editType: 'edit'
+      editType: 'edit',
+      isRentList: [
+        {
+          label: '全部',
+          value: ''
+        },
+        {
+          label: '已租',
+          value: 'true'
+        },
+        {
+          label: '未租',
+          value: 'false'
+        }
+      ]
     }
   },
   created() {
@@ -351,15 +383,7 @@ export default {
       this.tabLoading = true
       this.staffFrom.page = page
       this.staffFrom.pageSize = pageSize || 10
-      request('/api/backend/shop/findPageByCondition.json', METHOD.GET,
-        {
-          size: this.staffFrom.pageSize,
-          page: this.staffFrom.page,
-          GTE_demandArea: this.staffFrom.areaLarge,
-          LTE_demandArea: this.staffFrom.areaSmall,
-          LIKE_format: this.staffFrom.format,
-          LIKE_name: this.staffFrom.name
-        }).then(res => {
+      request('/api/backend/shop/findPageByCondition.json', METHOD.GET, this.staffFrom).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content
             this.tabLoading = false

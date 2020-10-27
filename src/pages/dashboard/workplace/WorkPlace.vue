@@ -46,7 +46,7 @@
           </a-tabs>
         </a-col>
         <a-col style="padding: 0 12px" >
-          <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 0}">
+          <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 15}">
             <div>
               <a-card-grid :key="i" v-for="(item, i) in mbarList" style="margin:15px 15px 0 0;">
                 <a-card :bordered="false" :body-style="{padding: 0}">
@@ -157,6 +157,18 @@ export default {
         {
           title: '员工数',
           num: 0
+        },
+        {
+          title: '总录入店铺数',
+          num: 0
+        },
+        {
+          title: '总录入客户数',
+          num: 0
+        },
+        {
+          title: '总员工数',
+          num: 0
         }
       ]
     }
@@ -167,6 +179,7 @@ export default {
   },
   created() {
      setTimeout(() => this.loading = !this.loading, 1000)
+     this.getRankTotal();
   },
   methods: {
     getRanking() {
@@ -180,6 +193,20 @@ export default {
             this.mbarList[0].num = res.data.data.shopCountStatistics
             this.mbarList[1].num = res.data.data.customerCountStatistics
             this.mbarList[2].num = res.data.data.memberCountStatistics
+          } else {
+            this.$message.error(res.data.message)
+          }
+        })
+    },
+    getRankTotal() {
+      request('/api/backend/customer/indexTotal.json', METHOD.GET, {
+        startTime: this.startTime,
+        endTime: this.endTime
+      }).then(res => {
+          if (res.status === 200 && res.data.code === '200') {
+            this.mbarList[3].num = res.data.data.shopCount
+            this.mbarList[4].num = res.data.data.customerCount
+            this.mbarList[5].num = res.data.data.memberCount
           } else {
             this.$message.error(res.data.message)
           }

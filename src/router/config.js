@@ -67,6 +67,14 @@ const options = {
               path: 'shop',
               name: '店铺管理',
               component: () => import('@/pages/dashboard/shop')
+            },
+            {
+              path: 'addshop',
+              name: '新增店铺',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/dashboard/addShop')
             }
           ]
         },
