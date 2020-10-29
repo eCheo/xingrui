@@ -1,6 +1,5 @@
 import TabsView from '@/layouts/tabs/TabsView'
 import BlankView from '@/layouts/BlankView'
-import PageView from '@/layouts/PageView'
 
 // 路由配置
 const options = {
@@ -75,81 +74,14 @@ const options = {
                 invisible: true
               },
               component: () => import('@/pages/dashboard/addShop')
-            }
-          ]
-        },
-        {
-          path: 'form',
-          name: '表单页',
-          meta: {
-            icon: 'form',
-          },
-          component: PageView,
-          children: [
-            {
-              path: 'basic',
-              name: '基础表单',
-              component: () => import('@/pages/form/basic'),
             },
             {
-              path: 'step',
-              name: '分步表单',
-              component: () => import('@/pages/form/step'),
-            },
-            {
-              path: 'advance',
-              name: '高级表单',
-              component: () => import('@/pages/form/advance'),
-            }
-          ]
-        },
-        {
-          path: 'list',
-          name: '列表页',
-          meta: {
-            icon: 'table'
-          },
-          component: PageView,
-          children: [
-            {
-              path: 'query',
-              name: '查询表格',
+              path: 'shopdetails',
+              name: '编辑店铺',
               meta: {
-                authority: 'queryForm',
+                invisible: true
               },
-              component: () => import('@/pages/list/QueryList'),
-            },
-            {
-              path: 'primary',
-              name: '标准列表',
-              component: () => import('@/pages/list/StandardList'),
-            },
-            {
-              path: 'card',
-              name: '卡片列表',
-              component: () => import('@/pages/list/CardList'),
-            },
-            {
-              path: 'search',
-              name: '搜索列表',
-              component: () => import('@/pages/list/search/SearchLayout'),
-              children: [
-                {
-                  path: 'article',
-                  name: '文章',
-                  component: () => import('@/pages/list/search/ArticleList'),
-                },
-                {
-                  path: 'application',
-                  name: '应用',
-                  component: () => import('@/pages/list/search/ApplicationList'),
-                },
-                {
-                  path: 'project',
-                  name: '项目',
-                  component: () => import('@/pages/list/search/ProjectList'),
-                }
-              ]
+              component: () => import('@/pages/dashboard/shopDetails')
             }
           ]
         }

@@ -54,7 +54,7 @@
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
                   <a-divider type="vertical" />
-                  <a @click="setStaffInfo(record)">编辑</a>
+                  <a @click="goDetails(record)">编辑</a>
               </span>
           </a-table>
         </div>
@@ -316,8 +316,7 @@ export default {
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         areaSize: [
-          { required: true, message: '请输入面积', trigger: 'blur' },
-          { max: 999, message: '面积不能超过999', trigger: 'blur' }
+          { required: true, message: '请输入面积', trigger: 'blur' }
         ],
         area: [
           { required: true, message: '请输入地址', trigger: 'blur' },
@@ -394,8 +393,8 @@ export default {
         })
     },
     goDetails(data) {
-        sessionStorage.setItem('cusId', data.id);
-        this.$router.push('/dashboard/customerdetails')
+        sessionStorage.setItem('shopid', data.id);
+        this.$router.push('/dashboard/shopdetails')
     },
     changeStaff() {
       if (this.editType === 'edit') {
@@ -441,18 +440,6 @@ export default {
         if (key === 'id')
         delete this.form[key]
       }
-    },
-    setStaffInfo(data) {
-      this.editType = 'edit'
-      this.editModal = true
-      this.form.name = data.name
-      this.form.phone = data.phone
-      this.form.sex = data.sex.name
-      this.form.format = data.format
-      this.form.demandArea = data.demandArea
-      this.form.demandAddress = data.demandAddress
-      this.form.brandName = data.brandName
-      this.form.id = data.id
     }
   }
 }

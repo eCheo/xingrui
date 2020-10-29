@@ -164,7 +164,7 @@
     </a-modal>
       <footer-tool-bar>
         <a-button style="margin-right:10px" type="text" @click="$router.push('/Dashboard/shop')">取消</a-button>
-        <a-button type="primary" :loading="butLoading" @click="createShop">提交</a-button>
+        <a-button type="primary" :loading="butLoading" @click="updateShop">提交</a-button>
     </footer-tool-bar>
   </div>
 </template>
@@ -202,7 +202,7 @@ export default {
         ],
         area: [
           { required: true, message: '请输入地址', trigger: 'blur' },
-          { max: 999, message: '地址不能超过999', trigger: 'blur' }
+          { max: 999, message: '地址不能超过999个字', trigger: 'blur' }
         ],
         buildingHeight: [
           { required: true, message: '请输入层高', trigger: 'blur' }
@@ -243,7 +243,8 @@ export default {
       previewImage: '',
       fileList: [            
       ],
-      headers: {}
+      headers: {},
+      shopid: sessionStorage.getItem('shopid')
     }
   },
   created() {
@@ -254,17 +255,19 @@ export default {
         " " +
         sessionStorage.getItem("token")
     };
+    this.getShopDetails()
   },
   methods: {
-    createShop() {
+    updateShop() {
+      this.form.id = this.shopid;
         this.$refs.ruleForm.validate(valid => {
         if (valid || this.form.imagePaths.length > 0) {
             this.butLoading = true;
-            request('/api/backend/shop/create.json', METHOD.POST,
+            request('/api/backend/shop/update.json', METHOD.POST,
                 this.form).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     this.butLoading = false
-                    this.$message.success('添加成功');
+                    this.$message.success('修改成功');
                     this.$router.push('/Dashboard/shop');
                 } else {
                     this.$message.error(res.data.message)
@@ -295,11 +298,35 @@ export default {
             } else {
                 this.$message.error(data.message)
             }
+          } else {
+            this.fileList.forEach(item => {
+              this.form.imagePaths.push(item.url)
+            })
           }
       } else {
         this.form.imagePaths = []
       }
     },
+    getShopDetails() {
+      request('/api/backend/shop/findById.json', METHOD.GET, {
+        id: this.shopid
+      }).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          this.form = res.data.data;
+          this.form.sex = res.data.data.sex.name;
+          let obj = {}
+          this.form.imagePaths.forEach((item, index) => {
+            obj.status = 'done'
+            obj.name = '22.png'
+            obj.url = item
+            obj.uid = '-'+index
+            this.fileList.push(obj)
+          })
+        } else {
+          this.$message.error(res.data.message)
+        }
+      })
+    }
   }
 }
 </script>
