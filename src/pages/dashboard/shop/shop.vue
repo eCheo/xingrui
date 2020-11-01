@@ -58,7 +58,7 @@
                   <a-divider type="vertical" />
                   <a-popconfirm v-if="auth" placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteShop(record)">
                     <template slot="title">
-                      <p>是否要删除改店铺？</p>
+                      <p>是否要删除该店铺？</p>
                     </template>
                     <a>删除</a>
                   </a-popconfirm>
