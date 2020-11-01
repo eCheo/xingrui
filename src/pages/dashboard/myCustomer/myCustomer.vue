@@ -131,6 +131,16 @@
 <script>
 import {request, METHOD} from '@/utils/request'
 // import axios from 'axios'
+const phoneValid = (rule, value, callback) => {
+  let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
+  if (value === '') {
+    return callback(new Error('请输入手机号'))
+  } else if (!reg.test(value)) {
+    return callback(new Error('请输入正确的手机号'))
+  } else {
+    callback()
+  }
+}
 export default {
   name: 'customer',
   data () {
@@ -201,9 +211,7 @@ export default {
           { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
         ],
         phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          { required: true, validator:phoneValid, trigger: 'blur' }
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         format: [
@@ -213,7 +221,7 @@ export default {
         demandArea: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
           { max: 999, message: '面积不能超过999', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         demandAddress: [
           { required: true, message: '请输入需求地址', trigger: 'blur' },

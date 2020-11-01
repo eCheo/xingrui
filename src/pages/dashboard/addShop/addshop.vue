@@ -180,6 +180,16 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+const phoneValid = (rule, value, callback) => {
+  let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
+  if (value === '') {
+    return callback(new Error('请输入手机号'))
+  } else if (!reg.test(value)) {
+    return callback(new Error('请输入正确的手机号'))
+  } else {
+    callback()
+  }
+}
 export default {
   name: 'customer',
   components: {FooterToolBar},
@@ -193,9 +203,7 @@ export default {
           { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
         ],
         phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          { required: true, validator:phoneValid, trigger: 'blur' }
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         areaSize: [
@@ -207,23 +215,23 @@ export default {
         ],
         buildingHeight: [
           { required: true, message: '请输入层高', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         floorHeight: [
           { required: true, message: '请输入楼高', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         deepening: [
           { required: true, message: '请输入进深', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         money: [
           { required: true, message: '请输入租金', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         openRoom: [
           { required: true, message: '请输入开间', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字', trigger: 'blur'}
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         paymentMethod: [
           { required: true, message: '请输入付款方式', trigger: 'blur' }
