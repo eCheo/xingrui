@@ -8,7 +8,7 @@ axios.defaults.timeout = 5000
 axios.defaults.withCredentials= true
 axios.defaults.xsrfHeaderName= xsrfHeaderName
 axios.defaults.xsrfCookieName= xsrfHeaderName
-axios.defaults.baseURL = 'http://47.108.133.94:8089'
+axios.defaults.baseURL = 'http://47.108.133.94:8080'
 
 // 认证类型
 const AUTH_TYPE = {

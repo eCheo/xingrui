@@ -37,6 +37,11 @@ const resp403 = {
       message.error(response.data.message);
       options.router.push('/login')
     }
+    if (response.data.code === '777') {
+      message.error(`您还没有添加用户【${response.data.data.name}】的跟踪信息`);
+      options.router.push('/customerdetails')
+      return 
+    }
     return response
   }
 }

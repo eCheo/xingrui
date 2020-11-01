@@ -25,7 +25,7 @@
             </div>
             <div>
                 <span >电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
-                <a-button style="margin-left:15px;" v-if="cusInfo.isViewPhone" type='primary'>查看电话号码</a-button>
+                <a-button style="margin-left:15px;" v-if="cusInfo.isViewPhone" type='primary' @click="viewPhone">查看电话号码</a-button>
             </div>
             <div style="margin-top: 10px;" v-if="auth">
               <span>备注：</span>
@@ -92,6 +92,7 @@ export default {
   created() {
     setTimeout(() => this.loading = !this.loading, 1000)
     this.getStaff(1)
+    this.getTrackInfo(1)
   },
   methods: {
     getStaff() {
@@ -104,7 +105,6 @@ export default {
             this.cusInfo = res.data.data
             this.cusInfo.hidPhone = this.cusInfo.phone.replace(reg, '$1****$2')
             this.tabLoading = false
-            this.getTrackInfo(1)
           } else {
             this.$message.error(res.data.message)
             this.tabLoading = false
@@ -139,6 +139,19 @@ export default {
           this.$message.success('添加跟踪信息成功');
         } else {
           this.$message.error(res.data.message);
+        }
+      })
+    },
+    viewPhone() {
+      request('/api/backend/customer/viewPhone.json', METHOD.POST, {
+        id: sessionStorage.getItem('cusId')
+      }).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          // this.$message.success('添加跟踪信息成功');
+          this.getStaff(1);
+          this.getTrackInfo(1)
+        } else {
+          // this.$message.error(res.data.message);
         }
       })
     }

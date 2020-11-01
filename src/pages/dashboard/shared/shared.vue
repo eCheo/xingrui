@@ -200,8 +200,9 @@ export default {
           { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
         ],
         phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          {required: true, message: '请输入手机号', trigger: 'blur' },
+          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         format: [
@@ -210,7 +211,8 @@ export default {
         ],
         demandArea: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
-          { max: 999, message: '面积不能超过999', trigger: 'blur' }
+          { max: 999, message: '面积不能超过999', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         demandAddress: [
           { required: true, message: '请输入需求地址', trigger: 'blur' },
@@ -329,6 +331,13 @@ export default {
       this.form.demandAddress = data.demandAddress
       this.form.brandName = data.brandName
       this.form.id = data.id
+    }
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.getStaff(1)
+      }
     }
   }
 }

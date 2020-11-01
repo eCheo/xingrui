@@ -312,30 +312,37 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         areaSize: [
-          { required: true, message: '请输入面积', trigger: 'blur' }
+          { required: true, message: '请输入面积', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         area: [
           { required: true, message: '请输入地址', trigger: 'blur' },
-          { max: 999, message: '地址不能超过999', trigger: 'blur' }
+          { max: 50, message: '地址不能超过50个字', trigger: 'blur' }
         ],
         buildingHeight: [
-          { required: true, message: '请输入层高', trigger: 'blur' }
+          { required: true, message: '请输入层高', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         floorHeight: [
-          { required: true, message: '请输入楼高', trigger: 'blur' }
+          { required: true, message: '请输入楼高', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         deepening: [
-          { required: true, message: '请输入进深', trigger: 'blur' }
+          { required: true, message: '请输入进深', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         money: [
-          { required: true, message: '请输入租金', trigger: 'blur' }
+          { required: true, message: '请输入租金', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         openRoom: [
-          { required: true, message: '请输入开间', trigger: 'blur' }
+          { required: true, message: '请输入开间', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         paymentMethod: [
           { required: true, message: '请输入付款方式', trigger: 'blur' }
@@ -459,6 +466,13 @@ export default {
           })
         }
       })
+    }
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.getStaff(1)
+      }
     }
   }
 }

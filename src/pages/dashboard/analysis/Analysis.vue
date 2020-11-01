@@ -165,7 +165,8 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
           ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }]
       },
@@ -307,6 +308,13 @@ export default {
         }
       })
     }
+  },
+   watch: {
+      $route: {
+        handler() {
+          this.getStaff(1)
+        }
+      }
   }
 }
 </script>

@@ -263,7 +263,14 @@ export default {
             }
           })
       }, immediate: true
-    }
+    },
+    watch: {
+      $route: {
+        handler() {
+          this.getRankTotal()
+        }
+      }
+  }
   }
 }
 </script>

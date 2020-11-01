@@ -202,7 +202,8 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { max: 11, message: '请输入正确的手机号', trigger: 'blur' }
+          { max: 11, message: '请输入正确的手机号', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         format: [
@@ -211,7 +212,8 @@ export default {
         ],
         demandArea: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
-          { max: 999, message: '面积不能超过999', trigger: 'blur' }
+          { max: 999, message: '面积不能超过999', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字', trigger: 'blur'}
         ],
         demandAddress: [
           { required: true, message: '请输入需求地址', trigger: 'blur' },
@@ -336,7 +338,7 @@ export default {
         const elink = document.createElement('a')
         elink.download = '客户列表'
         elink.style.display = 'none'
-        elink.href = 'http://47.108.133.94:8089/api/backend/customer/exportCustomer.json';
+        elink.href = 'http://47.108.133.94:8080/api/backend/customer/exportCustomer.json';
         document.body.appendChild(elink)
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
