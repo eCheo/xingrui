@@ -2,6 +2,7 @@ import {hasAuthority} from '@/utils/authority-utils'
 import {loginIgnore} from '@/router/index'
 import {checkAuthorization} from '@/utils/request'
 import NProgress from 'nprogress'
+// import store from '@/store'
 
 NProgress.configure({ showSpinner: false })
 
@@ -13,6 +14,7 @@ NProgress.configure({ showSpinner: false })
  */
 const progressStart = (to, from, next) => {
   // start progress bar
+  // store.dispatch('account/getUserInfo')
   if (!NProgress.isStarted()) {
     NProgress.start()
   }

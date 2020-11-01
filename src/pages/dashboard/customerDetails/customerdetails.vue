@@ -8,7 +8,7 @@
                     <span>客户名称：{{cusInfo.name}}</span>
                 </div>
                 <div>
-                    <span>性别：{{cusInfo.sex.message}}</span>
+                    <span>性别：{{cusInfo.sex.message || ''}}</span>
                 </div>
                 <div>
                     <span>品牌名称：{{cusInfo.brandName}}</span>
@@ -27,11 +27,16 @@
                 <span >电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
                 <a-button style="margin-left:15px;" v-if="cusInfo.isViewPhone" type='primary'>查看电话号码</a-button>
             </div>
+            <div style="margin-top: 10px;" v-if="auth">
+              <span>备注：</span>
+              <a-input v-model="remarks" style="width:80%;margin-right:10px;"></a-input>
+              <a-button type='primary' @click='addRecord'>添加</a-button>
+            </div>
         </div>
       </a-col>
       <a-col>
         <div style="background:#fff;padding:20px 12px;">
-          <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="cusInfo.followUpRecordDtoList">
+          <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="track">
           </a-table>
         </div>
       </a-col>
@@ -78,8 +83,10 @@ export default {
         showSizeChanger: true,
         showTotal: total => `共${total}条数据`,
         pageSizeOption: ['5', '10', '15', '20'],
-        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize)
-      }
+        onShowSizeChange: (current, pageSize) => this.getTrackInfo(current, pageSize)
+      },
+      track: [],
+      remarks: ''
     }
   },
   created() {
@@ -87,26 +94,65 @@ export default {
     this.getStaff(1)
   },
   methods: {
-    getStaff(page, pageSize) {
-      this.tabLoading = true
-      this.staffFrom.page = page
-      this.staffFrom.pageSize = pageSize || 10
-      request('/api/backend/customer/findFollowUpRecord.json', METHOD.GET,
+    getStaff() {
+      request('/api/backend/customer/findById.json', METHOD.GET,
         {
-          EQ_customerId: sessionStorage.getItem('cusId'),
-          page: this.staffFrom.page = page,
-          size: this.staffFrom.pageSize
+          id: sessionStorage.getItem('cusId')
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             let reg = /^(\d{3})\d{4}(\d{4})$/
             this.cusInfo = res.data.data
             this.cusInfo.hidPhone = this.cusInfo.phone.replace(reg, '$1****$2')
             this.tabLoading = false
+            this.getTrackInfo(1)
           } else {
             this.$message.error(res.data.message)
             this.tabLoading = false
           }
         })
+    },
+    getTrackInfo(page, pageSize) {
+      this.tabLoading = true
+      this.staffFrom.page = page
+      this.staffFrom.pageSize = pageSize || 10
+      request('/api/backend/customer/findFollowUpRecord.json', METHOD.GET,
+        {
+          EQ_customerId: sessionStorage.getItem('cusId'),
+          page: this.staffFrom.page,
+          size: this.staffFrom.pageSize
+        }).then(res => {
+          if (res.status === 200 && res.data.code === '200') {
+            this.track = res.data.data.content
+            this.tabLoading = false
+          } else {
+            this.$message.error(res.data.message)
+            this.tabLoading = false
+          }
+        })
+    },
+    addRecord() {
+      request('/api/backend/customer/createRecord.json', METHOD.POST, {
+        customerId: sessionStorage.getItem('cusId'),
+        remarks: this.remarks
+      }).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          this.$message.success('添加跟踪信息成功');
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
+    }
+  },
+  computed: {
+    auth() {
+      return this.$store.state.account.userInfo.memberType === 'front'
+    }
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.getStaff()
+      }
     }
   }
 }

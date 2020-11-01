@@ -60,6 +60,13 @@
             "
           />
         </a-form-model-item>
+        <a-form-model-item ref="memberType" label="员工角色" prop="memberType">
+          <a-select  v-model='form.memberType'>
+              <a-select-option :value="item.value" v-for="(item, index) in authList" :key="index">
+                {{item.label}}
+              </a-select-option>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item ref="phone" label="手机号" prop="phone">
           <a-input
             v-model="form.phone"
@@ -165,9 +172,20 @@ export default {
       form: {
         name: '',
         phone: '',
-        sex: 'Man'
+        sex: 'Man',
+        memberType: 'front'
       },
-      editType: 'edit'
+      editType: 'edit',
+      authList: [
+        {
+          label: '管理员',
+          value: 'backend'
+        },
+        {
+          label: '员工',
+          value: 'front'
+        }
+      ]
     }
   },
   created() {

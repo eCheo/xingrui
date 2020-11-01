@@ -22,9 +22,6 @@
                 <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
                     添加客户
                 </a-button>
-                <a-button v-if='auth' @click="exportExcel" type="primary" style="margin-left: 15px;">
-                    导出excel
-                </a-button>
             </div>
         </div>
       </a-col>
@@ -34,9 +31,7 @@
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
               <span slot="action" slot-scope="text, record">
-                  <a @click="goDetails(record)">详情</a>
-                  <a-divider type="vertical" />
-                  <a @click="setStaffInfo(record)">修改</a>
+                  <a @click="goDetails(record)">接单</a>
               </span>
           </a-table>
         </div>
@@ -135,7 +130,6 @@
 
 <script>
 import {request, METHOD} from '@/utils/request'
-// import axios from 'axios'
 export default {
   name: 'customer',
   data () {
@@ -254,8 +248,7 @@ export default {
         {
           size: this.staffFrom.pageSize,
           page: this.staffFrom.page,
-          GTE_demandArea: this.staffFrom.areaLarge,
-          LTE_demandArea: this.staffFrom.areaSmall,
+          EQ_customerStatus: 'Share',
           LIKE_format: this.staffFrom.format,
           LIKE_name: this.staffFrom.name
         }).then(res => {
@@ -270,7 +263,7 @@ export default {
     },
     goDetails(data) {
         sessionStorage.setItem('cusId', data.id);
-        this.$router.push('/customerdetails')
+        this.$router.push('/dashboard/customerdetails')
     },
     changeStaff() {
       if (this.editType === 'edit') {
@@ -336,21 +329,6 @@ export default {
       this.form.demandAddress = data.demandAddress
       this.form.brandName = data.brandName
       this.form.id = data.id
-    },
-    exportExcel() {
-        const elink = document.createElement('a')
-        elink.download = '客户列表'
-        elink.style.display = 'none'
-        elink.href = 'http://47.108.133.94:8089/api/backend/customer/exportCustomer.json';
-        document.body.appendChild(elink)
-        elink.click()
-        URL.revokeObjectURL(elink.href) // 释放URL 对象
-        document.body.removeChild(elink)
-    }
-  },
-  computed: {
-    auth() {
-      return this.$store.state.account.userInfo.memberType === 'admin'
     }
   }
 }

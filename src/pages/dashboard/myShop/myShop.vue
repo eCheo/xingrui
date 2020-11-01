@@ -52,7 +52,7 @@
               <span slot="buildingHeight" slot-scope="text, record">{{record.buildingHeight+'/'+record.floorHeight}}</span>
               <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
               <span slot="action" slot-scope="text, record">
-                  <a @click="goDetails(record)">编辑</a>
+                  <a @click="goDetails(record)">详情</a>
               </span>
           </a-table>
         </div>
@@ -392,7 +392,7 @@ export default {
     },
     goDetails(data) {
         sessionStorage.setItem('shopid', data.id);
-        this.$router.push('/shopdetails')
+        this.$router.push('/myshopdetails')
     },
     changeStaff() {
       if (this.editType === 'edit') {

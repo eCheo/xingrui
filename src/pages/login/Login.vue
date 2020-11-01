@@ -98,9 +98,8 @@ export default {
         // getRoutesConfig().then(result => {
           // const routesConfig = result.data.data
           // loadRoutes(routesConfig)
-          console.log(loginRes)
-          this.$router.push('/dashboard/workplace')
-          this.$message.success(loginRes.message, 3)
+          this.$router.push('/workplace')
+          this.$message.success('登录成功', 3)
         // })
     }
   }

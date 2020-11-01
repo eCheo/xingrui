@@ -1,7 +1,7 @@
 <template>
   <a-dropdown :trigger="['click']" v-model="show">
     <div slot="overlay">
-      <a-spin :spinning="loading">
+      <!-- <a-spin :spinning="loading">
         <a-tabs class="dropdown-tabs" :tabBarStyle="{textAlign: 'center'}" :style="{width: '297px'}">
           <a-tab-pane tab="通知" key="1">
             <a-list class="tab-pane">
@@ -29,10 +29,10 @@
             <a-list class="tab-pane"></a-list>
           </a-tab-pane>
         </a-tabs>
-      </a-spin>
+      </a-spin> -->
     </div>
-    <span @click="fetchNotice" class="header-notice">
-      <a-badge class="notice-badge" count="12">
+    <span class="header-notice">
+      <a-badge class="notice-badge" count="0">
         <a-icon :class="['header-notice-icon']" type="bell" />
       </a-badge>
     </span>

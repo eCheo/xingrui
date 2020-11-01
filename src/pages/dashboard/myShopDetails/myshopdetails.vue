@@ -1,177 +1,51 @@
 
 <template>
   <div class="cus-top" style="margin-bottom:20px;">
-      <a-form-model
-        style="width:700px"
-        ref="ruleForm"
-        :model="form"
-        :rules="rules"
-        labelAlign='right'
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-      >
-      <p>业主信息</p>
-        <a-form-model-item ref="name" label="业主名称" prop="name">
-          <a-input
-            style="width:150px"
-            v-model="form.name"
-            @blur="
-              () => {
-                $refs.name.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="phone" label="电话" prop="phone">
-          <a-input
-            style="width:150px"
-            v-model="form.phone"
-            @blur="
-              () => {
-                $refs.phone.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item label="性别" prop="sex">
-            <a-radio-group v-model="form.sex">
-              <a-radio value="Man">
-                男
-              </a-radio>
-              <a-radio value="WoMan">
-                女
-              </a-radio>
-            </a-radio-group>
-        </a-form-model-item>
-        <p>店铺信息</p>
-        <a-form-model-item ref="areaSize" label="面积" prop="areaSize">
-          <a-input
-            style="width:150px"
-            suffix="m²"
-            v-model="form.areaSize"
-            @blur="
-              () => {
-                $refs.areaSize.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="floorHeight" label="楼层" prop="floorHeight">
-          <a-input
-            style="width:150px"
-            prefix="第"
-            suffix="层"
-            v-model="form.floorHeight"
-            @blur="
-              () => {
-                $refs.floorHeight.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="buildingHeight" label="层高" prop="buildingHeight">
-          <a-input
-            style="width:150px"
-            prefix="共"
-            suffix="层"
-            v-model="form.buildingHeight"
-            @blur="
-              () => {
-                $refs.buildingHeight.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="deepening" label="进深" prop="deepening">
-          <a-input-number
-            style="width:150px"
-            :formatter="value => `${value}米`"
-            :parser="value => value.replace('米', '')"
-            v-model="form.deepening"
-            @blur="
-              () => {
-                $refs.deepening.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="openRoom" label="开间" prop="openRoom">
-          <a-input-number
-            :formatter="value => `${value}米`"
-            :parser="value => value.replace('米', '')"
-            style="width:150px"
-            v-model="form.openRoom"
-            @blur="
-              () => {
-                $refs.openRoom.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="area" label="地址" prop="area">
-          <a-textarea
-            v-model="form.area"
-            @blur="
-              () => {
-                $refs.area.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <p>租金信息</p>
-        <a-form-model-item ref="money" label="租金" prop="money">
-          <a-input
-            suffix="元"
-            style="width:150px"
-            v-model="form.money"
-            @blur="
-              () => {
-                $refs.money.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-        <a-form-model-item ref="paymentMethod" label="付款方式" prop="paymentMethod">
-          <a-input
-          style="width:150px"
-            v-model="form.paymentMethod"
-            @blur="
-              () => {
-                $refs.paymentMethod.onFieldBlur();
-              }
-            "
-          />
-        </a-form-model-item>
-      </a-form-model>
-      <p>店铺照片</p>
-      <a-upload
-        action="http://47.108.133.94:8089/api/obs/upload.json"
-        list-type="picture-card"
-        :file-list="fileList"
-        @preview="handlePreview"
-        @change="handleChange"
-        :headers='headers'
-        >
-        <div v-if="fileList.length < 9">
-            <a-icon type="plus" />
-            <div class="ant-upload-text">
-            上传照片
-            </div>
-        </div>
-        </a-upload>
-    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-      <img alt="example" style="width: 100%" :src="previewImage" />
-    </a-modal>
-      <footer-tool-bar>
-        <a-button style="margin-right:10px" type="text" @click="$router.push('/shop')">取消</a-button>
-        <a-button type="primary" :loading="butLoading" @click="updateShop">提交</a-button>
-    </footer-tool-bar>
+    <p>区域位置：{{form.area}}</p>
+    <div class="cus-box">
+      <div>
+        <span>业主姓名: {{form.name}}</span>
+      </div>
+      <div>
+        <span>性别: {{form.sex}}</span>
+      </div>
+      <div>
+        <span>电话号码: {{form.phone}}</span>
+      </div>
+      <div>
+        <span>楼层: 第{{form.floorHeight}}层</span>
+      </div>
+      <div>
+        <span>层高: 共{{form.buildingHeight}}层</span>
+      </div>
+      <div>
+        <span>开间: {{form.openRoom}}米</span>
+      </div>
+      <div>
+        <span>进深: {{form.deepening}}米</span>
+      </div>
+      <div>
+        <span>面积大小: {{form.areaSize}}</span>
+      </div>
+      <div>
+        <span>租金: {{form.money}}元</span>
+      </div>
+      <div>
+        <span>付款方式: {{form.paymentMethod}}</span>
+      </div>
+      <div>
+        <span>是否已租: {{!form.isRent ? '未租' : '已租'}}</span>
+      </div>
+    </div>
+    <div class="cus-img">
+      <p style="font-size:16px;color:#333;">店铺照片</p>
+      <img v-for="(item, index) in form.imagePaths" :src="item" :key="index">
+    </div>
   </div>
 </template>
 
 <script>
 import {request, METHOD} from '@/utils/request'
-import FooterToolBar from '@/components/tool/FooterToolBar'
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -182,7 +56,6 @@ function getBase64(file) {
 }
 export default {
   name: 'customer',
-  components: {FooterToolBar},
   data () {
     return {
       loading: true,
@@ -259,7 +132,7 @@ export default {
   },
   methods: {
     updateShop() {
-      this.form.id = sessionStorage.getItem('shopid');
+      this.form.id = this.shopid;
         this.$refs.ruleForm.validate(valid => {
         if (valid || this.form.imagePaths.length > 0) {
             this.butLoading = true;
@@ -313,7 +186,7 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.form = res.data.data;
-          this.form.sex = res.data.data.sex.name;
+          this.form.sex = res.data.data.sex.message;
           let obj = {}
           this.form.imagePaths.forEach((item, index) => {
             obj.status = 'done'
@@ -328,13 +201,11 @@ export default {
       })
     }
   },
-  watch: {
-    $route: {
+  $route: {
       handler() {
         this.getShopDetails()
       }
     }
-  }
 }
 </script>
 
@@ -350,6 +221,14 @@ export default {
             margin-bottom: 15px;
         }
     }
+}
+.cus-img {
+  margin-top: 30px;
+  img {
+    width: 300px;
+    height: 250px;
+    margin-right: 15px;
+  }
 }
 .bottom {
     position: fixed;

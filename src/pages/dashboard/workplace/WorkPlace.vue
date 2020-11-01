@@ -27,7 +27,7 @@
               </a-card-grid>
             </a-tab-pane>
             <div slot="tabBarExtraContent">
-              <a-radio-group default-value="1" v-model="day"  @change='getRanking' button-style="solid" style="margin-right:15px;">
+              <a-radio-group default-value="1" v-model="day" button-style="solid" style="margin-right:15px;">
                 <a-radio-button value="1">
                   今日
                 </a-radio-button>
@@ -46,7 +46,7 @@
           </a-tabs>
         </a-col>
         <a-col style="padding: 0 12px" >
-          <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" :title="$t('progress')" :body-style="{padding: 15}">
+          <a-card class="project-list" :loading="loading" style="margin-bottom: 24px;" :bordered="false" title="总览" :body-style="{padding: 15}">
             <div>
               <a-card-grid :key="i" v-for="(item, i) in mbarList" style="margin:15px 15px 0 0;">
                 <a-card :bordered="false" :body-style="{padding: 0}">
@@ -229,6 +229,9 @@ export default {
             if (res.status === 200 && res.data.code === '200') {
               this.projects[0].list = res.data.data.customer
               this.projects[1].list = res.data.data.shop
+              this.mbarList[0].num = res.data.data.shopCountStatistics
+              this.mbarList[1].num = res.data.data.customerCountStatistics
+              this.mbarList[2].num = res.data.data.memberCountStatistics
             } else {
               this.$message.error(res.data.message)
             }

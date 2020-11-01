@@ -33,10 +33,9 @@ const resp403 = {
     if (response.status === 403) {
       message.error(`请求被拒绝`)
     } 
-    console.log(options)
     if (response.data.code === '209') {
       message.error(response.data.message);
-      // options.router.push('/login')
+      options.router.push('/login')
     }
     return response
   }

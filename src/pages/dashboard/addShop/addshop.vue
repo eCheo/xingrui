@@ -163,7 +163,7 @@
       <img alt="example" style="width: 100%" :src="previewImage" />
     </a-modal>
       <footer-tool-bar>
-        <a-button style="margin-right:10px" type="text" @click="$router.push('/Dashboard/shop')">取消</a-button>
+        <a-button style="margin-right:10px" type="text" @click="$router.push('/shop')">取消</a-button>
         <a-button type="primary" :loading="butLoading" @click="createShop">提交</a-button>
     </footer-tool-bar>
   </div>
@@ -265,7 +265,7 @@ export default {
                 if (res.status === 200 && res.data.code === '200') {
                     this.butLoading = false
                     this.$message.success('添加成功');
-                    this.$router.push('/Dashboard/shop');
+                    this.$router.push('/shop');
                 } else {
                     this.$message.error(res.data.message)
                     this.butLoading = false

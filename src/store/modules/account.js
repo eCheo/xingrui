@@ -1,10 +1,12 @@
+import { request ,METHOD } from '../../utils/request'
 export default {
   namespaced: true,
   state: {
     user: undefined,
     permissions: null,
     roles: null,
-    routesConfig: null
+    routesConfig: null,
+    userInfo: null
   },
   getters: {
     user: state => {
@@ -71,6 +73,23 @@ export default {
     setRoutesConfig(state, routesConfig) {
       state.routesConfig = routesConfig
       localStorage.setItem(process.env.VUE_APP_ROUTES_KEY, JSON.stringify(routesConfig))
+    },
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo
+    }
+  },
+  actions: {
+    getUserInfo({commit}) {
+      return new Promise((resolve, reject) => {
+      request('/api/backend/member/findMember.json', METHOD.GET).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          commit('setUserInfo', res.data.data)
+          resolve(res.data)
+        }
+      }).catch(err => {
+        reject(err)
+      })
+    })
     }
   }
 }

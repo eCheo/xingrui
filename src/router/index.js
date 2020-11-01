@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {formatRoutes} from '@/utils/routerUtil'
+import routers from './config'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -17,6 +19,25 @@ const loginIgnore = {
     return this.names.includes(route.name) || this.paths.includes(route.path)
   }
 }
+store.dispatch('account/getUserInfo').then(user => {
+  routers.routes.forEach(item => {
+    if (item.children) {
+      item.children.forEach(it => {
+        if (it.name !== '首页' || it.name !== '编辑店铺' || it.name !== '新增店铺' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '店铺详情') {
+          if (user.data.memberType === 'front' && (it.name === '共享池' || it.name === '店铺' || it.name === '我的客户')) {
+              it.meta.invisible = false
+          } else if(user.data.memberType === 'admin' && (it.name === '共享池' || it.name === '店铺' || it.name === '我的客户')){
+            it.meta.invisible = true
+          } else if(user.data.memberType === 'admin' && (it.name === '共享池' || it.name === '店铺' || it.name === '我的客户')) {
+            it.meta.invisible = true
+          } else if (user.data.memberType === 'front' && it.name === '设置' && it.name === '员工管理') {
+            it.meta.invisible = true
+          }
+        }
+      })
+    }
+  });
+})
 
 /**
  * 初始化路由实例
