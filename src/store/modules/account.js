@@ -1,4 +1,5 @@
 import { request ,METHOD } from '../../utils/request'
+import routers from '../../router/config'
 export default {
   namespaced: true,
   state: {
@@ -83,6 +84,23 @@ export default {
       return new Promise((resolve, reject) => {
       request('/api/backend/member/findMember.json', METHOD.GET).then(res => {
         if (res.status === 200 && res.data.code === '200') {
+          routers.routes.forEach(item => {
+            if (item.children) {
+              item.children.forEach(it => {
+                if (it.name !== '首页' || it.name !== '编辑店铺' || it.name !== '新增店铺' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '店铺详情') {
+                  if (res.data.data.memberType === 'front' && (it.name === '共享池' || it.name === '店铺' || it.name === '我的客户')) {
+                    it.meta.invisible = false
+                  } else if(res.data.data.memberType === 'admin' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '店铺管理' || it.name === '设置')) {
+                    it.meta.invisible = false
+                  } else if(res.data.data.memberType === 'backend' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '店铺管理' || it.name === '设置')) {
+                    it.meta.invisible = false
+                  }  else {
+                    it.meta.invisible = true
+                  }
+                }
+              })
+            }
+          });
           commit('setUserInfo', res.data.data)
           resolve(res.data)
         }

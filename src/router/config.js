@@ -40,7 +40,8 @@ const options = {
               path: 'analysis',
               name: '员工管理',
               meta: {
-                invisible: false
+                invisible: false,
+                icon: 'user'
               },
               component: () => import('@/pages/dashboard/analysis'),
             },
@@ -48,7 +49,8 @@ const options = {
               path: 'customer',
               name: '客户管理',
               meta: {
-                invisible: false
+                invisible: false,
+                icon: 'solution'
               },
               component: () => import('@/pages/dashboard/customer')
             },
@@ -64,7 +66,8 @@ const options = {
               path: 'shop',
               name: '店铺管理',
               meta: {
-                invisible: false
+                invisible: false,
+                icon: 'shop'
               },
               component: () => import('@/pages/dashboard/shop')
             },
@@ -88,7 +91,8 @@ const options = {
               path: 'mycustomer',
               name: '我的客户',
               meta: {
-                invisible: true
+                invisible: true,
+                icon: 'solution'
               },
               component: () => import('@/pages/dashboard/myCustomer')
             },
@@ -96,7 +100,8 @@ const options = {
               path: 'shared',
               name: '共享池',
               meta: {
-                invisible: false
+                invisible: false,
+                icon: 'inbox'
               },
               component: () => import('@/pages/dashboard/shared')
             },
@@ -104,7 +109,8 @@ const options = {
               path: 'setting',
               name: '设置',
               meta: {
-                invisible: false
+                invisible: false,
+                icon: 'setting'
               },
               component: () => import('@/pages/dashboard/setting')
             },
@@ -120,7 +126,8 @@ const options = {
               path: 'myshop',
               name: '店铺',
               meta: {
-                invisible: true
+                invisible: true,
+                icon: 'shop'
               },
               component: () => import('@/pages/dashboard/myShop')
             },

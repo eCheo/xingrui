@@ -95,12 +95,14 @@ export default {
         this.setRoles([{id: 'admin', operation: ['add', 'edit', 'delete']}])
         setAuthorization({token: loginRes.data.accessToken})
         // 获取路由配置
-        // getRoutesConfig().then(result => {
-          // const routesConfig = result.data.data
-          // loadRoutes(routesConfig)
-          this.$router.push('/workplace')
-          this.$message.success('登录成功', 3)
-        // })
+        this.$store.dispatch('account/getUserInfo').then(user => {
+          if (user.data.memberType === 'front') {
+            this.$router.push('/mycustomer')
+          } else {
+            this.$router.push('/workplace')
+          }
+        })
+        this.$message.success('登录成功', 3)
     }
   }
 }
