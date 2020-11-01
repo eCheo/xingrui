@@ -352,6 +352,13 @@ export default {
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
     }
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.getStaff(1)
+      }
+    }
   }
 }
 </script>

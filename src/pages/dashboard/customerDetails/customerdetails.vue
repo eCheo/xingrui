@@ -137,6 +137,8 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.$message.success('添加跟踪信息成功');
+          this.remarks = ''
+          this.getTrackInfo(1)
         } else {
           this.$message.error(res.data.message);
         }
@@ -147,11 +149,7 @@ export default {
         id: sessionStorage.getItem('cusId')
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
-          // this.$message.success('添加跟踪信息成功');
           this.getStaff(1);
-          this.getTrackInfo(1)
-        } else {
-          // this.$message.error(res.data.message);
         }
       })
     }
@@ -162,11 +160,11 @@ export default {
     }
   },
   watch: {
-    $route: {
-      handler() {
-        this.getStaff()
+      $route: {
+        handler() {
+          this.getStaff(1)
+        }
       }
-    }
   }
 }
 </script>

@@ -3,7 +3,10 @@ import Router from 'vue-router'
 import {formatRoutes} from '@/utils/routerUtil'
 
 Vue.use(Router)
-
+const originalPush = Router.prototype.push
+   Router.prototype.push = function push(location) {
+   return originalPush.call(this, location).catch(err => err)
+}
 // 不需要登录拦截的路由配置
 const loginIgnore = {
   names: ['404', '403'],      //根据路由名称匹配
