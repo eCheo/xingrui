@@ -200,7 +200,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
+          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [
           { required: true, validator:phoneValid, trigger: 'blur' }

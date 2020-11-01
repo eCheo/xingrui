@@ -73,7 +73,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
+          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [
           { required: true, validator:phoneValid, trigger: 'blur' }
@@ -155,8 +155,8 @@ export default {
                 this.form).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     this.butLoading = false
-                    this.$message.success('修改成功');
-                    this.$router.push('/shop');
+                    this.$message.success('修改成功')
+                    this.$router.push('/shop')
                 } else {
                     this.$message.error(res.data.message)
                     this.butLoading = false

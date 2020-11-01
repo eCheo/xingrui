@@ -12,12 +12,12 @@ const options = {
     {
       path: '*',
       name: '404',
-      component: () => import('@/pages/exception/404'),
+      component: () => import('@/pages/exception/404')
     },
     {
       path: '/403',
       name: '403',
-      component: () => import('@/pages/exception/403'),
+      component: () => import('@/pages/exception/403')
     },
     {
       path: '/',
@@ -34,7 +34,7 @@ const options = {
                 },
                 invisible: true
               },
-              component: () => import('@/pages/dashboard/workplace'),
+              component: () => import('@/pages/dashboard/workplace')
             },
             {
               path: 'analysis',
@@ -43,7 +43,7 @@ const options = {
                 invisible: false,
                 icon: 'user'
               },
-              component: () => import('@/pages/dashboard/analysis'),
+              component: () => import('@/pages/dashboard/analysis')
             },
             {
               path: 'customer',
@@ -140,7 +140,7 @@ const options = {
               component: () => import('@/pages/dashboard/myShopDetails')
             }
       ]
-    },
+    }
   ]
 }
 

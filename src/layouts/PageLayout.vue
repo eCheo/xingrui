@@ -1,11 +1,7 @@
 <template>
   <div class="page-layout">
     <page-header ref="pageHeader" :style="`margin-top: ${multiPage ? 0 : -24}px`" :breadcrumb="breadcrumb" :title="pageTitle" :logo="logo" :avatar="avatar">
-      <!-- <slot name="action"  slot="action"></slot> -->
       <slot slot="content" name="headerContent"></slot>
-      <!-- <div slot="content">
-      </div> -->
-      <!-- <slot v-if="this.$slots.extra" slot="extra" name="extra"></slot> -->
     </page-header>
     <div ref="page" :class="['page-content', layout, pageWidth]" >
       <slot></slot>

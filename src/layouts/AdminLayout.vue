@@ -19,9 +19,6 @@
           <slot></slot>
         </div>
       </a-layout-content>
-      <!-- <a-layout-footer style="padding: 0px">
-        <page-footer :link-list="footerLinks" :copyright="copyright" />
-      </a-layout-footer> -->
     </a-layout>
   </a-layout>
 </template>

@@ -220,7 +220,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
+          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [
            { required: true, validator:phoneValid, trigger: 'blur' }
@@ -291,7 +291,7 @@ export default {
     },
     changeStaff() {
       if (this.editType === 'edit') {
-        this.updataStaff();
+        this.updataStaff()
       } else {
         this.createStaff()
       }
@@ -358,7 +358,7 @@ export default {
         const elink = document.createElement('a')
         elink.download = '客户列表'
         elink.style.display = 'none'
-        elink.href = 'http://47.108.133.94:8080/api/backend/customer/exportCustomer.json';
+        elink.href = 'http://47.108.133.94:8080/api/backend/customer/exportCustomer.json'
         document.body.appendChild(elink)
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象

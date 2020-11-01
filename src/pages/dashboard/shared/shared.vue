@@ -1,50 +1,47 @@
 <template>
   <div class="analysis" style="margin-bottom:20px;">
     <a-row style="margin-top: 0" :gutter="[24, 24]">
-      <a-col >
+      <a-col>
         <div class="cas-content" style="background:#fff;padding:12px 107px;">
-            <div>
-                <span>客户名称：</span>
-                <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
-            </div>
-            <div>
-                <span>需求面积：</span>
-                <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
-                <span>~</span>
-                <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
-            </div>
-            <div>
-                <span style="margin-right:28px;">业态：</span>
-                <a-input v-model="staffFrom.format" style="width:300px;" placeholder="请输入业态" />
-                <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">
-                    查询
-                </a-button>
-                <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
-                    添加客户
-                </a-button>
-            </div>
+          <div>
+            <span>客户名称：</span>
+            <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
+          </div>
+          <div>
+            <span>需求面积：</span>
+            <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
+            <span>~</span>
+            <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+          </div>
+          <div>
+            <span style="margin-right:28px;">业态：</span>
+            <a-input v-model="staffFrom.format" style="width:300px;" placeholder="请输入业态" />
+            <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">查询</a-button>
+            <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">添加客户</a-button>
+          </div>
         </div>
       </a-col>
       <a-col>
         <div style="background:#fff;padding:20px 12px;">
-          <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
-              <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
-              <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
-              <span slot="action" slot-scope="text, record">
-                  <a @click="goDetails(record)">详情</a>
-              </span>
+          <a-table
+            :pagination="pagination"
+            :loading="tabLoading"
+            :columns="staffList"
+            :data-source="staffData"
+          >
+            <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
+            <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
+            <span slot="action" slot-scope="text, record">
+              <a @click="goDetails(record)">详情</a>
+            </span>
           </a-table>
         </div>
       </a-col>
     </a-row>
     <a-modal v-model="editModal" :title="editType === 'edit' ? '编辑': '添加'">
       <template slot="footer">
-        <a-button key="back" @click="editModal = false">
-          取消
-        </a-button>
-        <a-button key="submit" type="primary" :loading='editLoading' @click="changeStaff">
-          确定
-        </a-button>
+        <a-button key="back" @click="editModal = false">取消</a-button>
+        <a-button key="submit" type="primary" :loading="editLoading" @click="changeStaff">确定</a-button>
       </template>
       <a-form-model
         ref="ruleForm"
@@ -74,14 +71,10 @@
           />
         </a-form-model-item>
         <a-form-model-item label="性别" prop="sex">
-            <a-radio-group v-model="form.sex">
-              <a-radio value="Man">
-                男
-              </a-radio>
-              <a-radio value="WoMan">
-                女
-              </a-radio>
-            </a-radio-group>
+          <a-radio-group v-model="form.sex">
+            <a-radio value="Man">男</a-radio>
+            <a-radio value="WoMan">女</a-radio>
+          </a-radio-group>
         </a-form-model-item>
         <a-form-model-item ref="format" label="业态" prop="format">
           <a-input
@@ -129,7 +122,7 @@
 </template>
 
 <script>
-import {request, METHOD} from '@/utils/request'
+import { request, METHOD } from '@/utils/request'
 const phoneValid = (rule, value, callback) => {
   let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
   if (value === '') {
@@ -142,7 +135,7 @@ const phoneValid = (rule, value, callback) => {
 }
 export default {
   name: 'customer',
-  data () {
+  data() {
     return {
       loading: true,
       tabLoading: false,
@@ -202,17 +195,18 @@ export default {
         showSizeChanger: true,
         showTotal: total => `共${total}条数据`,
         pageSizeOption: ['5', '10', '15', '20'],
-        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize)
+        onShowSizeChange: (current, pageSize) =>
+          this.getStaff(current, pageSize)
       },
       rules: {
         name: [
           { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' },
+          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
         ],
-        phone: [
-          { required: true, validator:phoneValid, trigger: 'blur' }
+        phone: [{ required: true, validator: phoneValid, trigger: 'blur' }],
+        sex: [
+          { required: true, message: 'Please pick a date', trigger: 'change' }
         ],
-        sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
         format: [
           { required: true, message: '请输入业态', trigger: 'blur' },
           { max: 10, message: '业态不能超过10个字', trigger: 'blur' }
@@ -220,7 +214,14 @@ export default {
         demandArea: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
           { max: 999, message: '面积不能超过999', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+          {
+            type: 'number',
+            message: '只能输入数字',
+            transform: value => {
+              return Number(value)
+            },
+            trigger: 'blur'
+          }
         ],
         demandAddress: [
           { required: true, message: '请输入需求地址', trigger: 'blur' },
@@ -246,7 +247,7 @@ export default {
     }
   },
   created() {
-    setTimeout(() => this.loading = !this.loading, 1000)
+    setTimeout(() => (this.loading = !this.loading), 1000)
     this.getStaff(1)
   },
   methods: {
@@ -254,30 +255,29 @@ export default {
       this.tabLoading = true
       this.staffFrom.page = page
       this.staffFrom.pageSize = pageSize || 10
-      request('/api/backend/customer/findByCondition.json', METHOD.GET,
-        {
-          size: this.staffFrom.pageSize,
-          page: this.staffFrom.page,
-          EQ_customerStatus: 'Share',
-          LIKE_format: this.staffFrom.format,
-          LIKE_name: this.staffFrom.name
-        }).then(res => {
-          if (res.status === 200 && res.data.code === '200') {
-            this.staffData = res.data.data.content
-            this.tabLoading = false
-          } else {
-            this.$message.error(res.data.message)
-            this.tabLoading = false
-          }
-        })
+      request('/api/backend/customer/findByCondition.json', METHOD.GET, {
+        size: this.staffFrom.pageSize,
+        page: this.staffFrom.page,
+        EQ_customerStatus: 'Share',
+        LIKE_format: this.staffFrom.format,
+        LIKE_name: this.staffFrom.name
+      }).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          this.staffData = res.data.data.content
+          this.tabLoading = false
+        } else {
+          this.$message.error(res.data.message)
+          this.tabLoading = false
+        }
+      })
     },
     goDetails(data) {
-        sessionStorage.setItem('cusId', data.id);
-        this.$router.push('/customerdetails')
+      sessionStorage.setItem('cusId', data.id)
+      this.$router.push('/customerdetails')
     },
     changeStaff() {
       if (this.editType === 'edit') {
-        this.updataStaff();
+        this.updataStaff()
       } else {
         this.createStaff()
       }
@@ -285,47 +285,53 @@ export default {
     createStaff() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-      this.editLoading = true
-      request('/api/backend/customer/create.json', METHOD.POST, this.form).then(res => {
-          if (res.status === 200 && res.data.code === '200') {
-            this.editLoading = false
-            this.$message.success('添加成功')
-            this.getStaff(this.staffFrom.page)
-            this.editModal = false
-          } else {
-            this.$message.error(res.data.message)
-            this.editLoading = false
-          }
-        })
+          this.editLoading = true
+          request(
+            '/api/backend/customer/create.json',
+            METHOD.POST,
+            this.form
+          ).then(res => {
+            if (res.status === 200 && res.data.code === '200') {
+              this.editLoading = false
+              this.$message.success('添加成功')
+              this.getStaff(this.staffFrom.page)
+              this.editModal = false
+            } else {
+              this.$message.error(res.data.message)
+              this.editLoading = false
+            }
+          })
         }
       })
     },
     updataStaff() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-      this.editLoading = true
-      request('/api/backend/customer/update.json', METHOD.POST, this.form).then(res => {
-          if (res.status === 200 && res.data.code === '200') {
-            this.editLoading = false
-            this.$message.success('修改成功')
-            this.editModal = false
-            this.getStaff(1)
-          } else {
-            this.$message.error(res.data.message)
-            this.editLoading = false
-          }
-        })
+          this.editLoading = true
+          request(
+            '/api/backend/customer/update.json',
+            METHOD.POST,
+            this.form
+          ).then(res => {
+            if (res.status === 200 && res.data.code === '200') {
+              this.editLoading = false
+              this.$message.success('修改成功')
+              this.editModal = false
+              this.getStaff(1)
+            } else {
+              this.$message.error(res.data.message)
+              this.editLoading = false
+            }
+          })
         }
       })
     },
-    claerStaffInfo(){
+    claerStaffInfo() {
       this.editType = 'add'
       this.editModal = true
-      for(let key in this.form) {
-        if (key !== 'sex')
-        this.form[key] = ''
-        if (key === 'id')
-        delete this.form[key]
+      for (let key in this.form) {
+        if (key !== 'sex') this.form[key] = ''
+        if (key === 'id') delete this.form[key]
       }
     },
     setStaffInfo(data) {
@@ -353,11 +359,11 @@ export default {
 
 <style lang="less" scoped>
 .cas-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    div {
-        margin:0 40px 15px 0;
-    }
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  div {
+    margin: 0 40px 15px 0;
+  }
 }
 </style>

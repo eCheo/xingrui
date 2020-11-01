@@ -15,7 +15,7 @@ const AUTH_TYPE = {
   BEARER: 'bearer',
   BASIC: 'Basic',
   AUTH1: 'auth1',
-  AUTH2: 'auth2',
+  AUTH2: 'auth2'
 }
 
 // http method
