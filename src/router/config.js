@@ -85,6 +85,14 @@ const options = {
               component: () => import('@/pages/dashboard/shopDetails')
             },
             {
+              path: 'mycustomer',
+              name: '我的客户',
+              meta: {
+                invisible: true
+              },
+              component: () => import('@/pages/dashboard/myCustomer')
+            },
+            {
               path: 'shared',
               name: '共享池',
               meta: {
@@ -107,14 +115,6 @@ const options = {
                 invisible: true
               },
               component: () => import('@/pages/dashboard/password')
-            },
-            {
-              path: 'mycustomer',
-              name: '我的客户',
-              meta: {
-                invisible: true
-              },
-              component: () => import('@/pages/dashboard/myCustomer')
             },
             {
               path: 'myshop',

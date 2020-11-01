@@ -53,6 +53,8 @@
               <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">编辑</a>
+                  <a-divider type="vertical" />
+                  <a @click="setIsRent(record)">设为{{record.isRent ? '未租' : '已租'}}</a>
               </span>
           </a-table>
         </div>
@@ -269,7 +271,7 @@ export default {
           title: '地址',
           dataIndex: 'area',
           key: 'area',
-          width: 550
+          width: 530
         },
         {
           title: '租金(元)',
@@ -438,6 +440,25 @@ export default {
         if (key === 'id')
         delete this.form[key]
       }
+    },
+    setIsRent(data) {
+      const self = this;
+      this.$confirm({
+        title: '设置',
+        content: `是否设置当前店铺为${data.isRent ? '未租': '已租'}`,
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          request('/api/backend/shop/rented.json', METHOD.POST, {id: data.id, isRent: !data.isRent}).then(res => {
+            if(res.status === 200 && res.data.code === '200') {
+              self.$message.success('设置成功')
+              self.getStaff(self.staffFrom.page)
+            } else {
+              self.$message.error(res.data.message)
+            }
+          })
+        }
+      })
     }
   }
 }
@@ -446,7 +467,6 @@ export default {
 <style lang="less" scoped>
 .cas-content {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     div {
         margin:0 40px 15px 0;

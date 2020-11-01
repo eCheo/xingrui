@@ -8,11 +8,9 @@
                 <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
             </div>
             <div>
-                <span>需求面积小于等于：</span>
+                <span>需求面积：</span>
                 <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
-            </div>
-            <div>
-                <span>需求面积大于等于：</span>
+                <span>~</span>
                 <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
             </div>
             <div>
@@ -351,7 +349,6 @@ export default {
 <style lang="less" scoped>
 .cas-content {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     div {
         margin:0 40px 15px 0;

@@ -359,7 +359,6 @@ export default {
 <style lang="less" scoped>
 .cas-content {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     div {
         margin:0 40px 15px 0;

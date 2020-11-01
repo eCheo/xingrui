@@ -29,6 +29,8 @@
               >
                 <a>删除</a>
               </a-popconfirm>
+              <a-divider type="vertical" />
+              <a @click="resetPassword(record)">重置密码</a>
             </span>
           </a-table>
         </div>
@@ -61,7 +63,7 @@
           />
         </a-form-model-item>
         <a-form-model-item ref="memberType" label="员工角色" prop="memberType">
-          <a-select  v-model='form.memberType'>
+          <a-select v-model='form.memberType'>
               <a-select-option :value="item.value" v-for="(item, index) in authList" :key="index">
                 {{item.label}}
               </a-select-option>
@@ -185,7 +187,8 @@ export default {
           label: '员工',
           value: 'front'
         }
-      ]
+      ],
+      upModal: false
     }
   },
   created() {
@@ -285,6 +288,24 @@ export default {
       this.form.phone = data.phone
       this.form.sex = data.sex.name
       this.form.id = data.id
+    },
+    resetPassword(data) {
+      const self = this;
+      this.$confirm({
+        title: '重置密码',
+        content: `是否重置${data.name}的密码`,
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          request('/api/backend/member/resetPassword.json', METHOD.POST, {id: data.id}).then(res => {
+            if(res.status === 200 && res.data.code === '200') {
+              self.$message.success('重置密码成功')
+            } else {
+              self.$message.error(res.data.message)
+            }
+          })
+        }
+      })
     }
   }
 }

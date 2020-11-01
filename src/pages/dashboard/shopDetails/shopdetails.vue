@@ -108,6 +108,16 @@
             "
           />
         </a-form-model-item>
+        <a-form-model-item ref="isRent" label="是否已租" prop="isRent">
+          <a-radio-group v-model="form.isRent">
+            <a-radio :value="true">
+              已租
+            </a-radio>
+            <a-radio :value="false">
+              未租
+            </a-radio>
+          </a-radio-group>
+        </a-form-model-item>
         <a-form-model-item ref="area" label="地址" prop="area">
           <a-textarea
             v-model="form.area"
@@ -237,7 +247,8 @@ export default {
         money: '',
         openRoom: '',
         paymentMethod: '',
-        imagePaths: []
+        imagePaths: [],
+        isRent: false
       },
       previewVisible: false,
       previewImage: '',

@@ -31,7 +31,7 @@
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
               <span slot="action" slot-scope="text, record">
-                  <a @click="goDetails(record)">接单</a>
+                  <a @click="goDetails(record)">详情</a>
               </span>
           </a-table>
         </div>
@@ -263,7 +263,7 @@ export default {
     },
     goDetails(data) {
         sessionStorage.setItem('cusId', data.id);
-        this.$router.push('/dashboard/customerdetails')
+        this.$router.push('/customerdetails')
     },
     changeStaff() {
       if (this.editType === 'edit') {
