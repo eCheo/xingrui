@@ -55,6 +55,13 @@
                   <a @click="goDetails(record)">编辑</a>
                   <a-divider type="vertical" />
                   <a @click="setIsRent(record)">设为{{record.isRent ? '未租' : '已租'}}</a>
+                  <a-divider type="vertical" />
+                  <a-popconfirm v-if="auth" placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteShop(record)">
+                    <template slot="title">
+                      <p>是否要删除改店铺？</p>
+                    </template>
+                    <a>删除</a>
+                  </a-popconfirm>
               </span>
           </a-table>
         </div>
@@ -245,7 +252,7 @@ export default {
           title: '电话号码',
           dataIndex: 'phone',
           key: 'phone',
-          width: 138
+          width: 118
         },
         {
           title: '性别',
@@ -281,7 +288,7 @@ export default {
           title: '地址',
           dataIndex: 'area',
           key: 'area',
-          width: 530
+          width: 500
         },
         {
           title: '租金(元)',
@@ -474,6 +481,23 @@ export default {
           })
         }
       })
+    },
+    deleteShop(data) {
+      request('/api/backend/shop/delete.json', METHOD.POST, {
+        id: data.id
+      }).then(res => {
+        if(res.status === 200 && res.data.code === '200') {
+          this.$message.success('删除成功')
+          this.getStaff(this.staffFrom.page)
+        } else {
+          this.$message.error(res.data.message)
+        }
+      })
+    }
+  },
+  computed: {
+    auth() {
+      return this.$store.state.account.userInfo.memberType === 'admin'
     }
   },
   watch: {

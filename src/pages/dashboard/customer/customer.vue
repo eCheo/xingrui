@@ -37,6 +37,13 @@
                   <a @click="goDetails(record)">详情</a>
                   <a-divider type="vertical" />
                   <a @click="setStaffInfo(record)">修改</a>
+                  <a-divider type="vertical" />
+                  <a-popconfirm v-if="auth" placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteStaff(record)">
+                    <template slot="title">
+                      <p>是否要删除改客户？</p>
+                    </template>
+                    <a>删除</a>
+                  </a-popconfirm>
               </span>
           </a-table>
         </div>
@@ -356,6 +363,18 @@ export default {
         elink.click()
         URL.revokeObjectURL(elink.href) // 释放URL 对象
         document.body.removeChild(elink)
+    },
+    deleteStaff(data) {
+      request('/api/backend/customer/delete.json', METHOD.POST, {
+        id: data.id
+      }).then(res => {
+        if(res.status === 200 && res.data.code === '200') {
+          this.$message.success('删除成功')
+          this.getStaff(this.staffFrom.page)
+        } else {
+          this.$message.error(res.data.message)
+        }
+      })
     }
   },
   computed: {
