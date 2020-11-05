@@ -9,9 +9,20 @@
             </div>
             <div>
                 <span>需求面积：</span>
-                <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
                 <span>~</span>
-                <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+            </div>
+            <div>
+              <span style="margin-right:10px;">需求区域:</span>
+              <a-cascader
+                style="width:300px;"
+                change-on-select
+                :options="options"
+                :show-search="{ filter }"
+                placeholder="请选择区域街道"
+                @change="onSelectChange"
+              />
             </div>
             <div>
                 <span style="margin-right:28px;">业态：</span>
@@ -103,9 +114,10 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="demandArea" label="需求面积" prop="demandArea">
+        <a-form-model-item class="de-left" style="display:inline-block;" ref="demandArea" label="需求面积" prop="demandArea">
           <a-input
             v-model="form.demandArea"
+            suffix="m²"
             @blur="
               () => {
                 $refs.demandArea.onFieldBlur();
@@ -113,7 +125,33 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="demandAddress" label="需求地址" prop="demandAddress">
+        <span class="de-center">~</span>
+        <a-form-model-item class="de-right" ref="deadAreaEnd" prop="deadAreaEnd" style="display:inline-block;">
+          <a-input
+            v-model="form.deadAreaEnd"
+            suffix="m²"
+            @blur="
+              () => {
+                $refs.deadAreaEnd.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="areaId" label="需求区域" prop="areaId">
+          <a-cascader
+            :options="options"
+            :show-search="{ filter }"
+            :default-value='areaDefaultList'
+            placeholder="请选择区域街道"
+            @change="onChange"
+            @blur="
+              () => {
+                $refs.areaId.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="demandAddress" label="详细地址" prop="demandAddress">
           <a-textarea
             v-model="form.demandAddress"
             @blur="
@@ -155,7 +193,9 @@ export default {
         pageSize: 10,
         areaLarge: '',
         areaSmall: '',
-        format: ''
+        format: '',
+        areaId: '',
+        streetId: ''
       },
       staffList: [
         {
@@ -186,9 +226,14 @@ export default {
           scopedSlots: { customRender: 'demandArea' }
         },
         {
-          title: '需求区域',
-          dataIndex: 'demandAddress',
-          key: 'demandAddress'
+          title: '区域',
+          dataIndex: 'areaName',
+          key: 'areaName'
+        },
+        {
+          title: '街道',
+          dataIndex: 'streetName',
+          key: 'streetName'
         },
         {
           title: '操作',
@@ -227,9 +272,13 @@ export default {
           { required: true, message: '请输入需求地址', trigger: 'blur' },
           { max: 50, message: '地址不能超过50个字', trigger: 'blur' }
         ],
-        brandName: [
-          { required: true, message: '请输入品牌名称', trigger: 'blur' },
-          { max: 10, message: '品牌名称不能超过10个字', trigger: 'blur' }
+        deadAreaEnd: [
+          { required: true, message: '请输入需求面积', trigger: 'blur' },
+          { max: 999, message: '面积不能超过999', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+        ],
+        areaId: [
+          { required: true, message: '请选择区域街道', trigger: 'blur' }
         ]
       },
       labelCol: { span: 4 },
@@ -241,14 +290,20 @@ export default {
         format: '',
         demandArea: '',
         demandAddress: '',
-        brandName: ''
+        brandName: '',
+        areaId: '',
+        streetId: '',
+        deadAreaEnd: ''
       },
-      editType: 'edit'
+      editType: 'edit',
+      options: [],
+      areaDefaultList: []
     }
   },
   created() {
     setTimeout(() => this.loading = !this.loading, 1000)
     this.getStaff(1)
+    this.getAddress()
   },
   methods: {
     getStaff(page, pageSize) {
@@ -259,10 +314,12 @@ export default {
         {
           size: this.staffFrom.pageSize,
           page: this.staffFrom.page,
-          GTE_demandArea: this.staffFrom.areaLarge,
-          LTE_demandArea: this.staffFrom.areaSmall,
+          GTE_demandArea: this.staffFrom.areaSmall,
+          LTE_demandArea: this.staffFrom.areaLarge,
           LIKE_format: this.staffFrom.format,
-          LIKE_name: this.staffFrom.name
+          LIKE_name: this.staffFrom.name,
+          EQ_areaId: this.staffFrom.areaId,
+          EQ_streetId: this.staffFrom.streetId
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content
@@ -323,6 +380,7 @@ export default {
     claerStaffInfo(){
       this.editType = 'add'
       this.editModal = true
+      this.areaDefaultList = [];
       for(let key in this.form) {
         if (key !== 'sex')
         this.form[key] = ''
@@ -341,16 +399,32 @@ export default {
       this.form.demandAddress = data.demandAddress
       this.form.brandName = data.brandName
       this.form.id = data.id
+      this.form.deadAreaEnd = data.deadAreaEnd
+      this.areaDefaultList[0] = data.areaId
+      this.areaDefaultList[1] = data.streetId
     },
-    exportExcel() {
-        const elink = document.createElement('a')
-        elink.download = '客户列表'
-        elink.style.display = 'none'
-        elink.href = 'http://47.108.133.94:8080/api/backend/customer/exportCustomer.json';
-        document.body.appendChild(elink)
-        elink.click()
-        URL.revokeObjectURL(elink.href) // 释放URL 对象
-        document.body.removeChild(elink)
+    filter(inputValue, path) {
+      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    },
+    onSelectChange(value) {
+      this.staffFrom.areaId = value[0];
+      this.staffFrom.streetId = value[1];
+    },
+    onChange(value) {
+      this.form.areaId = value[0];
+      this.form.streetId = value[1];
+    },
+    getAddress() {
+      request('/api/backend/customer/findCityAll.json', METHOD.GET).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          res.data.data.forEach(item => {
+            item.children = item.children.map(it => {return {value:it.id, label: it.name}})
+          })
+         this.options = res.data.data.map(item => {return {value:item.id, label: item.name,children: item.children}})
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
     }
   },
   watch: {
@@ -370,5 +444,25 @@ export default {
     div {
         margin:0 40px 15px 0;
     }
+}
+</style>
+<style lang="less">
+.de-left {
+  width:200px;
+  .ant-col-4 {
+    width: 39%;
+  }
+  .ant-col-14 {
+    width: 59%;
+  }
+}
+.de-center {
+    display: inline-block;
+    margin: 8px 12px 8px 8px;
+}
+.de-right {
+  .ant-col-14 {
+    width: 64%;
+  }
 }
 </style>

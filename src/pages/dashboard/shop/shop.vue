@@ -23,25 +23,32 @@
           </div>
           <div>
             <span>区域位置：</span>
-            <a-input v-model="staffFrom.LIKE_area" style="width:300px;" placeholder="请输入区域位置" />
+              <a-cascader
+                style="width:300px;"
+                change-on-select
+                :options="options"
+                :show-search="{ filter }"
+                placeholder="请选择区域街道"
+                @change="onChange"
+              />
           </div>
           <div>
             <span>面积：</span>
-            <a-input v-model="staffFrom.GTE_areaSize" style="width:150px;" />
+            <a-input suffix="m²" v-model="staffFrom.GTE_areaSize" style="width:150px;" />
             <span>~</span>
-            <a-input v-model="staffFrom.LTE_areaSize" style="width:150px;" />
+            <a-input suffix="m²" v-model="staffFrom.LTE_areaSize" style="width:150px;" />
           </div>
           <div>
             <span>租金：</span>
-            <a-input v-model="staffFrom.GTE_money" style="width:150px;" />
+            <a-input suffix="元" v-model="staffFrom.GTE_money" style="width:150px;" />
             <span>~</span>
-            <a-input v-model="staffFrom.LTE_money" style="width:150px;" />
+            <a-input suffix="元" v-model="staffFrom.LTE_money" style="width:150px;" />
             <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">查询</a-button>
             <a-button
               @click="$router.push('/addshop')"
               type="primary"
               style="margin-left: 15px;"
-            >添加店铺</a-button>
+            >添加铺源</a-button>
           </div>
         </div>
       </a-col>
@@ -56,10 +63,6 @@
             <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
             <span slot="isRent" slot-scope="isRent">{{isRent ? '是': '否'}}</span>
             <span slot="areaSize" slot-scope="text">{{text+' m²'}}</span>
-            <span
-              slot="buildingHeight"
-              slot-scope="text, record"
-            >{{record.buildingHeight+'/'+record.floorHeight}}</span>
             <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
             <span slot="action" slot-scope="text, record">
               <a @click="goDetails(record)">编辑</a>
@@ -74,7 +77,7 @@
                 @confirm="deleteShop(record)"
               >
                 <template slot="title">
-                  <p>是否要删除该店铺？</p>
+                  <p>是否要删除该铺源？</p>
                 </template>
                 <a>删除</a>
               </a-popconfirm>
@@ -247,7 +250,9 @@ export default {
         LTE_areaSize: '',
         EQ_isRent: '',
         GTE_money: '',
-        LTE_money: ''
+        LTE_money: '',
+        EQ_areaId: '',
+        EQ_streetId: ''
       },
       staffList: [
         {
@@ -276,10 +281,14 @@ export default {
           scopedSlots: { customRender: 'areaSize' }
         },
         {
-          title: '楼层/层高',
+          title: '楼层',
+          dataIndex: 'floorHeight',
+          key: 'floorHeight'
+        },
+        {
+          title: '层高',
           dataIndex: 'buildingHeight',
-          key: 'buildingHeight',
-          scopedSlots: { customRender: 'buildingHeight' }
+          key: 'buildingHeight'
         },
         {
           title: '进深',
@@ -293,10 +302,20 @@ export default {
           key: 'openRoom'
         },
         {
+          title: '区域',
+          dataIndex: 'areaName',
+          key: 'areaName'
+        },
+        {
+          title: '街道',
+          dataIndex: 'streetName',
+          key: 'streetName'
+        },
+        {
           title: '地址',
           dataIndex: 'area',
           key: 'area',
-          width: 500
+          width: 300
         },
         {
           title: '租金(元)',
@@ -412,6 +431,9 @@ export default {
         ],
         paymentMethod: [
           { required: true, message: '请输入付款方式', trigger: 'blur' }
+        ],
+        areaId: [
+          { required: true, message: '请选择区域街道', trigger: 'blur' }
         ]
       },
       labelCol: { span: 8 },
@@ -443,12 +465,15 @@ export default {
           label: '未租',
           value: 'false'
         }
-      ]
+      ],
+      options: [],
+      areaDefaultList: []
     }
   },
   created() {
     setTimeout(() => (this.loading = !this.loading), 1000)
     this.getStaff(1)
+    this.getAddress()
   },
   methods: {
     getStaff(page, pageSize) {
@@ -524,7 +549,7 @@ export default {
       const self = this
       this.$confirm({
         title: '设置',
-        content: `是否设置当前店铺为${data.isRent ? '未租' : '已租'}`,
+        content: `是否设置当前铺源为${data.isRent ? '未租' : '已租'}`,
         okText: '确定',
         cancelText: '取消',
         onOk() {
@@ -551,6 +576,25 @@ export default {
           this.getStaff(this.staffFrom.page)
         } else {
           this.$message.error(res.data.message)
+        }
+      })
+    },
+    filter(inputValue, path) {
+      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    },
+    onChange(value) {
+      this.staffFrom.EQ_areaId = value[0];
+      this.staffFrom.EQ_streetId = value[1];
+    },
+    getAddress() {
+      request('/api/backend/customer/findCityAll.json', METHOD.GET).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          res.data.data.forEach(item => {
+            item.children = item.children.map(it => {return {value:it.id, label: it.name}})
+          })
+         this.options = res.data.data.map(item => {return {value:item.id, label: item.name,children: item.children}})
+        } else {
+          this.$message.error(res.data.message);
         }
       })
     }

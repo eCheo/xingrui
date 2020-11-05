@@ -115,7 +115,7 @@ export default {
           ]
         },
         {
-          title: '店铺录入排行榜',
+          title: '铺源录入排行榜',
           list: [
             {
               name: '员工1',
@@ -148,7 +148,7 @@ export default {
       endTime: '',
       mbarList: [
         {
-          title: '录入店铺数',
+          title: '录入铺源数',
           num: 0
         },
         {
@@ -160,7 +160,7 @@ export default {
           num: 0
         },
         {
-          title: '总录入店铺数',
+          title: '总录入铺源数',
           num: 0
         },
         {

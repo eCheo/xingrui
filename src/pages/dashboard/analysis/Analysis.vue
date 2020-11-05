@@ -132,12 +132,22 @@ export default {
           key: 'phone'
         },
         {
-          title: '录入店铺数',
+          title: '本月录入客户数',
+          dataIndex: 'inputCustomerNumberMonth',
+          key: 'inputCustomerNumberMonth'
+        },
+        {
+          title: '本月录入铺源数',
+          dataIndex: 'inputShopNumberMonth',
+          key: 'inputShopNumberMonth'
+        },
+        {
+          title: '总录入铺源数',
           dataIndex: 'inputShopNumber',
           key: 'inputShopNumber'
         },
         {
-          title: '录入客户数',
+          title: '总录入客户数',
           dataIndex: 'inputCustomerNumber',
           key: 'inputCustomerNumber'
         },
@@ -297,6 +307,7 @@ export default {
       this.form.phone = data.phone
       this.form.sex = data.sex.name
       this.form.id = data.id
+      this.form.memberType = data.memberType
     },
     resetPassword(data) {
       const self = this;

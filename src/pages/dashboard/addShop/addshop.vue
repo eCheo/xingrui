@@ -43,7 +43,7 @@
               </a-radio>
             </a-radio-group>
         </a-form-model-item>
-        <p>店铺信息</p>
+        <p>铺源信息</p>
         <a-form-model-item ref="areaSize" label="面积" prop="areaSize">
           <a-input
             style="width:150px"
@@ -72,8 +72,7 @@
         <a-form-model-item ref="buildingHeight" label="层高" prop="buildingHeight">
           <a-input
             style="width:150px"
-            prefix="共"
-            suffix="层"
+            suffix="米"
             v-model="form.buildingHeight"
             @blur="
               () => {
@@ -108,7 +107,21 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="area" label="地址" prop="area">
+        <a-form-model-item ref="areaId" label="铺源区域" prop="areaId">
+          <a-cascader
+            :options="options"
+            :show-search="{ filter }"
+            :default-value='areaDefaultList'
+            placeholder="请选择区域街道"
+            @change="onChange"
+            @blur="
+              () => {
+                $refs.areaId.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="area" label="详细地址" prop="area">
           <a-textarea
             v-model="form.area"
             @blur="
@@ -143,7 +156,7 @@
           />
         </a-form-model-item>
       </a-form-model>
-      <p>店铺照片</p>
+      <p>铺源照片</p>
       <a-upload
         action="http://47.108.133.94:8080/api/obs/upload.json"
         list-type="picture-card"
@@ -235,6 +248,9 @@ export default {
         ],
         paymentMethod: [
           { required: true, message: '请输入付款方式', trigger: 'blur' }
+        ],
+        areaId: [
+          { required: true, message: '请选择区域街道', trigger: 'blur' }
         ]
       },
       labelCol: { span: 3 },
@@ -251,17 +267,22 @@ export default {
         money: '',
         openRoom: '',
         paymentMethod: '',
-        imagePaths: []
+        imagePaths: [],
+        areaId: '',
+        streetId: ''
       },
       previewVisible: false,
       previewImage: '',
       fileList: [            
       ],
-      headers: {}
+      headers: {},
+      options: [],
+      areaDefaultList: []
     }
   },
   created() {
     setTimeout(() => this.loading = !this.loading, 1000)
+    this.getAddress()
     this.headers = {
       Authorization:
         sessionStorage.getItem("tokenType") +
@@ -314,6 +335,25 @@ export default {
         this.form.imagePaths = []
       }
     },
+    filter(inputValue, path) {
+      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    },
+    onChange(value) {
+      this.form.areaId = value[0];
+      this.form.streetId = value[1];
+    },
+    getAddress() {
+      request('/api/backend/customer/findCityAll.json', METHOD.GET).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          res.data.data.forEach(item => {
+            item.children = item.children.map(it => {return {value:it.id, label: it.name}})
+          })
+         this.options = res.data.data.map(item => {return {value:item.id, label: item.name,children: item.children}})
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
+    }
   }
 }
 </script>

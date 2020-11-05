@@ -87,12 +87,12 @@ export default {
           routers.routes.forEach(item => {
             if (item.children) {
               item.children.forEach(it => {
-                if (it.name !== '首页' || it.name !== '编辑店铺' || it.name !== '新增店铺' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '店铺详情') {
-                  if (res.data.data.memberType === 'front' && (it.name === '共享池' || it.name === '店铺' || it.name === '我的客户')) {
+                if (it.name !== '首页' || it.name !== '编辑铺源' || it.name !== '新增铺源' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '铺源详情') {
+                  if (res.data.data.memberType === 'front' && (it.name === '共享池' || it.name === '铺源' || it.name === '我的客户')) {
                     it.meta.invisible = false
-                  } else if(res.data.data.memberType === 'admin' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '店铺管理' || it.name === '设置')) {
+                  } else if(res.data.data.memberType === 'admin' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '铺源管理' || it.name === '设置')) {
                     it.meta.invisible = false
-                  } else if(res.data.data.memberType === 'backend' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '店铺管理' || it.name === '设置')) {
+                  } else if(res.data.data.memberType === 'backend' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '铺源管理' || it.name === '设置')) {
                     it.meta.invisible = false
                   }  else {
                     it.meta.invisible = true

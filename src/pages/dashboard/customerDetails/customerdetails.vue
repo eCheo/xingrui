@@ -17,10 +17,13 @@
                     <span>业态：{{cusInfo.format}}</span>
                 </div>
                 <div>
-                    <span>需求面积：{{cusInfo.demandArea}} 平方米</span>
+                    <span>需求面积：{{cusInfo.demandArea}} m²</span>
+                </div>
+                <div>
+                    <span>需求区域：{{cusInfo.areaName + cusInfo.streetName}}</span>
                 </div>
                 <div style="width: 48%;">
-                    <span>需求区域：{{cusInfo.demandAddress}}</span>
+                    <span>详细地址：{{cusInfo.demandAddress}}</span>
                 </div>
             </div>
             <div>

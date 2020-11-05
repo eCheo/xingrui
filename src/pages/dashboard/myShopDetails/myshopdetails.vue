@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="cus-img">
-      <p style="font-size:16px;color:#333;">店铺照片</p>
+      <p style="font-size:16px;color:#333;">铺源照片</p>
       <img v-for="(item, index) in form.imagePaths" :src="item" :key="index">
     </div>
   </div>
