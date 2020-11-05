@@ -395,6 +395,7 @@ export default {
           this.form = res.data.data
           this.form.sex = res.data.data.sex.name
           let obj = {}
+          this.fileList = [];
           this.areaDefaultList[0] = res.data.data.areaId
           this.areaDefaultList[1] = res.data.data.streetId
           this.form.imagePaths.forEach((item, index) => {

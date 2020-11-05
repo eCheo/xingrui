@@ -40,7 +40,7 @@
         <div style="background:#fff;padding:20px 12px;">
           <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
-              <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
+              <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
               </span>
@@ -265,7 +265,7 @@ export default {
         ],
         demandArea: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
-          { max: 999, message: '面积不能超过999', trigger: 'blur' },
+          // { max: 999, message: '面积不能超过999', trigger: 'blur' },
           {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         demandAddress: [
@@ -274,7 +274,7 @@ export default {
         ],
         deadAreaEnd: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
-          { max: 999, message: '面积不能超过999', trigger: 'blur' },
+          // { max: 999, message: '面积不能超过999', trigger: 'blur' },
           {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         areaId: [
