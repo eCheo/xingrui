@@ -226,7 +226,8 @@ export default {
           page: this.staffFrom.page,
           LIKE_name: reg.test(this.staffFrom.name) ? '': this.staffFrom.name,
           LIKE_phone: reg.test(this.staffFrom.name) ? this.staffFrom.name : '',
-          NEQ_memberType: 'admin'
+          NEQ_memberType: 'admin',
+          sort: 'addDate,desc'
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content

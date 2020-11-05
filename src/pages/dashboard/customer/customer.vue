@@ -338,7 +338,8 @@ export default {
           LIKE_format: this.staffFrom.format,
           LIKE_name: this.staffFrom.name,
           EQ_areaId: this.staffFrom.areaId,
-          EQ_streetId: this.staffFrom.streetId
+          EQ_streetId: this.staffFrom.streetId,
+          sort: 'addDate,desc'
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content

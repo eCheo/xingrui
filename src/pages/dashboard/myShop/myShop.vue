@@ -9,7 +9,7 @@
             </div>
             <div>
                 <span>付款方式：</span>
-                <a-input v-model="staffFrom.EQ_paymentMethod" style="width:300px;" placeholder="付款方式" />
+                <a-input v-model="staffFrom.LIKE_paymentMethod" style="width:300px;" placeholder="付款方式" />
             </div>
             <div>
                 <span>是否已租：</span>
@@ -247,7 +247,7 @@ export default {
         page: '1',
         LIKE_name: '',
         pageSize: 10,
-        EQ_paymentMethod: '',
+        LIKE_paymentMethod: '',
         LIKE_area: '',
         GTE_areaSize: '',
         LTE_areaSize: '',
@@ -255,7 +255,8 @@ export default {
         GTE_money: "",
         LTE_money: "",
         EQ_areaId: '',
-        EQ_streetId: ''
+        EQ_streetId: '',
+        sort: 'addDate,desc'
       },
       staffList: [
         {
