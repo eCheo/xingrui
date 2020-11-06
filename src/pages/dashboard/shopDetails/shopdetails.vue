@@ -340,6 +340,20 @@ export default {
   methods: {
     updateShop() {
       this.form.id = sessionStorage.getItem('shopid')
+      this.form.imagePaths=[];
+      for(var i=0;i<this.fileList.length;i++){
+            if(this.fileList[i].status=='done'){
+                 if (this.fileList[i].response) {
+                    this.form.imagePaths.push(this.fileList[i].response.data.viewUrl)
+                  } else {
+                    this.form.imagePaths.push(this.fileList[i].url)
+                  }
+            }else{
+                this.$message.error('你存在上传失败的图片,请重新上传');
+                return;
+            }
+          
+      }
       this.$refs.ruleForm.validate(valid => {
         if (valid || this.form.imagePaths.length > 0) {
           this.butLoading = true
@@ -371,13 +385,14 @@ export default {
     handleChange({ fileList }) {
       this.fileList = fileList
       this.form.imagePaths = []
+      console.log(fileList);
       if (fileList.length > 0 && fileList[fileList.length -1].response) {
         fileList.forEach(item => {
-          if (item.response) {
-            this.form.imagePaths.push(item.response.data.viewUrl)
-          } else {
-            this.form.imagePaths.push(item.url)
-          }
+                if (item.response) {
+                    this.form.imagePaths.push(item.response.data.viewUrl)
+                  } else {
+                    this.form.imagePaths.push(item.url)
+                  }
         })
       } else {
         this.form.imagePaths = []
