@@ -60,7 +60,9 @@ export default {
         name: '',
         pageSize: 10
       },
-      cusInfo: {},
+      cusInfo: {
+         sex:{}
+      },
       staffList: [
         {
           title: '跟进人',
@@ -122,7 +124,8 @@ export default {
         {
           EQ_customerId: sessionStorage.getItem('cusId'),
           page: this.staffFrom.page,
-          size: this.staffFrom.pageSize
+          size: this.staffFrom.pageSize,
+          sort:"followUpDate,desc"
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.track = res.data.data.content

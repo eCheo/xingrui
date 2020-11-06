@@ -163,7 +163,7 @@
     <a-upload
       action="http://47.108.133.94:8080/api/obs/upload.json"
       list-type="picture-card"
-      :file-list="fileList"
+      :file-list=fileList
       @preview="handlePreview"
       @change="handleChange"
       :headers="headers"
@@ -335,6 +335,7 @@ export default {
     }
     this.getShopDetails()
     this.getAddress()
+    this.fileList = []
   },
   methods: {
     updateShop() {
@@ -370,19 +371,14 @@ export default {
     handleChange({ fileList }) {
       this.fileList = fileList
       this.form.imagePaths = []
-      if (fileList.length > 0) {
-        let data = fileList[fileList.length - 1].response || null
-        if (data) {
-          if (data.code === '200') {
-            this.form.imagePaths.push(data.data.viewUrl)
+      if (fileList.length > 0 && fileList[fileList.length -1].response) {
+        fileList.forEach(item => {
+          if (item.response) {
+            this.form.imagePaths.push(item.response.data.viewUrl)
           } else {
-            this.$message.error(data.message)
-          }
-        } else {
-          this.fileList.forEach(item => {
             this.form.imagePaths.push(item.url)
-          })
-        }
+          }
+        })
       } else {
         this.form.imagePaths = []
       }
@@ -394,17 +390,31 @@ export default {
         if (res.status === 200 && res.data.code === '200') {
           this.form = res.data.data
           this.form.sex = res.data.data.sex.name
-          let obj = {}
           this.fileList = [];
           this.areaDefaultList[0] = res.data.data.areaId
           this.areaDefaultList[1] = res.data.data.streetId
-          this.form.imagePaths.forEach((item, index) => {
-            obj.status = 'done'
-            obj.name = '22.png'
-            obj.url = item
-            obj.uid = '-' + index
-            this.fileList.push(obj)
+          // let obj = {
+          //   status: 'done',
+          //   name: '22.png',
+          //   url: '',
+          //   uid: ''
+          // }
+          console.log("fileLit:"+this.fileList);
+          res.data.data.imagePaths.forEach((item, index) => {
+            console.log("item:"+item+"___index:"+index);
+            var singleImage={
+                status:'done',
+                name:index+"_.png",
+                url:item,
+                uid:index,
+            }
+            // // this.$set(obj, 'url', item)
+            // // this.$set(obj, 'uid', '-' + index)
+            // // obj.uid = '-' + index
+            this.fileList.push(singleImage);
+            // console.log(this.fileList)
           })
+          
         } else {
           this.$message.error(res.data.message)
         }

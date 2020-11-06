@@ -58,6 +58,7 @@
               <span slot="areaSize" slot-scope="text">{{text+' m²'}}</span>
               <span slot="buildingHeight" slot-scope="text, record">{{record.buildingHeight+'/'+record.floorHeight}}</span>
               <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
+              <span slot="openRoom" slot-scope="text">{{text+ '米'}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
                   <a-divider type="vertical" />
@@ -303,7 +304,8 @@ export default {
         {
           title: '开间',
           dataIndex: 'openRoom',
-          key: 'openRoom'
+          key: 'openRoom',
+          scopedSlots: { customRender: 'openRoom' }
         },
         {
           title: '区域',
