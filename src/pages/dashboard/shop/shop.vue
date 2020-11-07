@@ -2,53 +2,57 @@
   <div class="analysis" style="margin-bottom:20px;">
     <a-row style="margin-top: 0" :gutter="[24, 24]">
       <a-col>
-        <div class="cas-content" style="background:#fff;padding:12px 107px;">
-          <div>
-            <span>业主名称：</span>
-            <a-input v-model="staffFrom.LIKE_name" style="width:300px;" placeholder="请输入业主名称" />
-          </div>
-          <div>
-            <span>付款方式：</span>
-            <a-input v-model="staffFrom.LIKE_paymentMethod" style="width:300px;" placeholder="付款方式" />
-          </div>
-          <div>
-            <span>是否已租：</span>
-            <a-select v-model="staffFrom.EQ_isRent" style="width:300px;">
-              <a-select-option
-                :value="item.value"
-                v-for="(item, index) in isRentList"
-                :key="index"
-              >{{item.label}}</a-select-option>
-            </a-select>
-          </div>
-          <div>
-            <span>区域位置：</span>
-              <a-cascader
-                style="width:300px;"
-                change-on-select
-                :options="options"
-                :show-search="{ filter }"
-                placeholder="请选择区域街道"
-                @change="onChange"
-              />
-          </div>
-          <div>
-            <span>面积：</span>
-            <a-input suffix="m²" v-model="staffFrom.GTE_areaSize" style="width:150px;" />
-            <span>~</span>
-            <a-input suffix="m²" v-model="staffFrom.LTE_areaSize" style="width:150px;" />
-          </div>
-          <div>
-            <span>租金：</span>
-            <a-input suffix="元" v-model="staffFrom.GTE_money" style="width:150px;" />
-            <span>~</span>
-            <a-input suffix="元" v-model="staffFrom.LTE_money" style="width:150px;" />
-            <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">查询</a-button>
-            <a-button
-              @click="$router.push('/addshop')"
-              type="primary"
-              style="margin-left: 15px;"
-            >添加铺源</a-button>
+        <div class="cas-content">
+          <div class="cas-box">
+            <div>
+              <span>业主名称：</span>
+              <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入业主名称" />
+            </div>
+            <div>
+              <span>付款方式：</span>
+              <a-input v-model="staffFrom.LIKE_paymentMethod" style="width:75%;" placeholder="付款方式" />
+            </div>
+            <div>
+              <span>是否已租：</span>
+              <a-select v-model="staffFrom.EQ_isRent" style="width:75%;">
+                <a-select-option
+                  :value="item.value"
+                  v-for="(item, index) in isRentList"
+                  :key="index"
+                >{{item.label}}</a-select-option>
+              </a-select>
+            </div>
+            <div>
+              <span>区域位置：</span>
+                <a-cascader
+                  style="width:75%;"
+                  change-on-select
+                  :options="options"
+                  :show-search="{ filter }"
+                  placeholder="请选择区域街道"
+                  @change="onChange"
+                />
+            </div>
+            <div>
+              <span style="margin:0 1px 0 27px;">面积：</span>
+              <a-input suffix="m²" v-model="staffFrom.GTE_areaSize" style="width:36%;" />
+              <span>~</span>
+              <a-input suffix="m²" v-model="staffFrom.LTE_areaSize" style="width:36%;" />
+            </div>
+            <div>
+              <span style="margin:0 1px 0 27px;">租金：</span>
+              <a-input suffix="元" v-model="staffFrom.GTE_money" style="width:36%;" />
+              <span>~</span>
+              <a-input suffix="元" v-model="staffFrom.LTE_money" style="width:36%;" />
+            </div>
+            <div style="width:97%;text-align:right;">
+              <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">查询</a-button>
+              <a-button
+                @click="$router.push('/addshop')"
+                type="primary"
+                style="margin-left: 15px;"
+              >添加铺源</a-button>
+            </div>
           </div>
         </div>
       </a-col>
@@ -59,12 +63,15 @@
             :loading="tabLoading"
             :columns="staffList"
             :data-source="staffData"
+            
           >
             <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
             <span slot="isRent" slot-scope="isRent">{{isRent ? '是': '否'}}</span>
             <span slot="areaSize" slot-scope="text">{{text+' m²'}}</span>
             <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
             <span slot="openRoom" slot-scope="text">{{text+ '米'}}</span>
+            <span slot="buildingHeight" slot-scope="text">{{text+ '米'}}</span>
+            <span slot="areaName" slot-scope="text, record">{{record.areaName+ ' ' + record.streetName}}</span>
             <span slot="action" slot-scope="text, record">
               <a @click="goDetails(record)">编辑</a>
               <a-divider type="vertical" />
@@ -258,10 +265,10 @@ export default {
       },
       staffList: [
         {
-          title: '客户名称',
+          title: '姓名',
           dataIndex: 'name',
           key: 'name',
-          width: 118
+          width: 90
         },
         {
           title: '电话号码',
@@ -274,51 +281,21 @@ export default {
           dataIndex: 'age',
           key: 'age',
           scopedSlots: { customRender: 'age' },
-          width: 80
+          width: 70
         },
         {
-          title: '面积大小',
+          title: '面积',
           dataIndex: 'areaSize',
           key: 'areaSize',
+          width: 100,
           scopedSlots: { customRender: 'areaSize' }
         },
         {
-          title: '楼层',
-          dataIndex: 'floorHeight',
-          key: 'floorHeight'
-        },
-        {
-          title: '层高',
-          dataIndex: 'buildingHeight',
-          key: 'buildingHeight'
-        },
-        {
-          title: '进深',
-          dataIndex: 'deepening',
-          key: 'deepening',
-          scopedSlots: { customRender: 'deepening' }
-        },
-        {
-          title: '开间',
-          dataIndex: 'openRoom',
-          key: 'openRoom',
-          scopedSlots: { customRender: 'openRoom' }
-        },
-        {
-          title: '区域',
+          title: '区域街道',
           dataIndex: 'areaName',
-          key: 'areaName'
-        },
-        {
-          title: '街道',
-          dataIndex: 'streetName',
-          key: 'streetName'
-        },
-        {
-          title: '地址',
-          dataIndex: 'area',
-          key: 'area',
-          width: 300
+          key: 'areaName',
+          width: 150,
+          scopedSlots: { customRender: 'areaName' }
         },
         {
           title: '租金(元)',
@@ -329,18 +306,21 @@ export default {
         {
           title: '付款方式',
           dataIndex: 'paymentMethod',
-          key: 'paymentMethod'
+          key: 'paymentMethod',
+          width: 100
         },
         {
           title: '是否已租',
           dataIndex: 'isRent',
           key: 'isRent',
+          width: 100,
           scopedSlots: { customRender: 'isRent' }
         },
         {
           title: '操作',
           dataIndex: 'action',
           key: 'action',
+          width: 180,
           scopedSlots: { customRender: 'action' }
         }
       ],
@@ -619,10 +599,17 @@ export default {
 
 <style lang="less" scoped>
 .cas-content {
-  display: flex;
-  flex-wrap: wrap;
-  div {
-    margin: 0 40px 15px 0;
+  background: #fff;
+  padding:12px;
+  .cas-box {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1366px;
+    margin: 0 auto;
+    div {
+      margin: 0 0 15px 0;
+      width: 33%;
+    }
   }
 }
 </style>

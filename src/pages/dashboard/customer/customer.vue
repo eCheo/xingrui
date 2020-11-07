@@ -6,18 +6,18 @@
           <div class='cas-box'>
             <div>
                 <span>客户名称：</span>
-                <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
+                <a-input v-model="staffFrom.name" style="width:75%;" placeholder="请输入客户名称" />
             </div>
             <div>
                 <span>需求面积：</span>
-                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:36%;" placeholder="请输入需求面积" />
                 <span>~</span>
-                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:36%;" placeholder="请输入需求面积" />
             </div>
             <div>
               <span style="margin-right:10px;">需求区域:</span>
               <a-cascader
-                style="width:300px;"
+                style="width:75%;"
                 change-on-select
                 :options="options"
                 :show-search="{ filter }"
@@ -25,10 +25,10 @@
                 @change="onSelectChange"
               />
             </div>
-            <div>
-                <span style="margin-right:28px;">业态：</span>
-                <a-input v-model="staffFrom.format" style="width:300px;" placeholder="请输入业态" />
-                <a-button @click="getStaff(1)" type="primary" style="margin-left: 42px;">
+            <div style="width:100%;">
+                <span style="margin:0 0px 0 28px;">业态：</span>
+                <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
+                <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">
                     查询
                 </a-button>
                 <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
@@ -215,49 +215,52 @@ export default {
         {
           title: '客户名称',
           dataIndex: 'name',
-          key: 'name'
+          key: 'name',
+          width: 138
         },
         {
           title: '性别',
           dataIndex: 'age',
           key: 'age',
+          width: 70,
           scopedSlots: { customRender: 'age' }
         },
         {
           title: '业态',
           dataIndex: 'format',
-          key: 'format'
+          key: 'format',
+          width: 138
         },
         {
           title: '品牌名称',
           dataIndex: 'brandName',
-          key: 'brandName'
+          key: 'brandName',
+          width: 138
         },
         {
           title: '需求面积',
           dataIndex: 'demandArea',
           key: 'demandArea',
+          width: 180,
           scopedSlots: { customRender: 'demandArea' }
         },
         {
           title: '区域',
           dataIndex: 'areaName',
-          key: 'areaName'
+          key: 'areaName',
+          width: 100
         },
         {
           title: '街道',
           dataIndex: 'streetName',
-          key: 'streetName'
-        },
-        {
-          title: '需求区域',
-          dataIndex: 'demandAddress',
-          key: 'demandAddress'
+          key: 'streetName',
+          width: 120
         },
         {
           title: '操作',
           dataIndex: 'action',
           key: 'action',
+          width: 200,
           scopedSlots: { customRender: 'action' }
         }
       ],
@@ -494,17 +497,18 @@ export default {
 
 <style lang="less" scoped>
 .cas-content {
-    background:#fff;
-    padding:12px 0;
-    .cas-box {
-      display: flex;
-      flex-wrap: wrap;
-      width: 1360px;
-      margin: 0 auto;
-      div {
-        margin:0 40px 15px 0;
-      }
+  background: #fff;
+  padding:12px;
+  .cas-box {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1366px;
+    margin: 0 auto;
+    div {
+      margin: 0 0 15px 0;
+      width: 33%;
     }
+  }
 }
 </style>
 <style lang="less">

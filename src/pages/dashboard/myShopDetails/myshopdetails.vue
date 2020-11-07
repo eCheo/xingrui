@@ -13,6 +13,9 @@
         <span>电话号码: {{form.phone}}</span>
       </div>
       <div>
+        <span>区域街道: {{form.areaName+''+form.streetName}}</span>
+      </div>
+      <div>
         <span>楼层: 第{{form.floorHeight}}层</span>
       </div>
       <div>

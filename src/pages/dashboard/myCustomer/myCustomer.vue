@@ -2,21 +2,22 @@
   <div class="analysis" style="margin-bottom:20px;">
     <a-row style="margin-top: 0" :gutter="[24, 24]">
       <a-col >
-        <div class="cas-content" style="background:#fff;padding:12px 107px;">
+        <div class="cas-content">
+          <div class='cas-box'>
             <div>
                 <span>客户名称：</span>
-                <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
+                <a-input v-model="staffFrom.name" style="width:75%;" placeholder="请输入客户名称" />
             </div>
             <div>
                 <span>需求面积：</span>
-                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:36%;" placeholder="请输入需求面积" />
                 <span>~</span>
-                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
+                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:36%;" placeholder="请输入需求面积" />
             </div>
             <div>
               <span style="margin-right:10px;">需求区域:</span>
               <a-cascader
-                style="width:300px;"
+                style="width:75%;"
                 change-on-select
                 :options="options"
                 :show-search="{ filter }"
@@ -24,16 +25,17 @@
                 @change="onSelectChange"
               />
             </div>
-            <div>
-                <span style="margin-right:28px;">业态：</span>
-                <a-input v-model="staffFrom.format" style="width:300px;" placeholder="请输入业态" />
-                <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">
+            <div style="width:100%;">
+                <span style="margin:0 0px 0 28px;">业态：</span>
+                <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
+                <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">
                     查询
                 </a-button>
                 <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
                     添加客户
                 </a-button>
             </div>
+          </div>
         </div>
       </a-col>
       <a-col>
@@ -440,11 +442,18 @@ export default {
 
 <style lang="less" scoped>
 .cas-content {
+  background: #fff;
+  padding:12px;
+  .cas-box {
     display: flex;
     flex-wrap: wrap;
+    max-width: 1366px;
+    margin: 0 auto;
     div {
-        margin:0 40px 15px 0;
+      margin: 0 0 15px 0;
+      width: 33%;
     }
+  }
 }
 </style>
 <style lang="less">
