@@ -46,10 +46,11 @@
           <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
+              <span slot="areaName" slot-scope="text, record">{{record.areaName+ ' ' + record.streetName}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
                   <a-divider type="vertical" />
-                  <a @click="setStaffInfo(record)">修改</a>
+                  <a @click="setStaffInfo(record)">编辑</a>
                   <a-divider type="vertical" />
                   <a-popconfirm v-if="auth" placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteStaff(record)">
                     <template slot="title">
@@ -245,16 +246,11 @@ export default {
           scopedSlots: { customRender: 'demandArea' }
         },
         {
-          title: '区域',
+          title: '区域街道',
           dataIndex: 'areaName',
           key: 'areaName',
-          width: 100
-        },
-        {
-          title: '街道',
-          dataIndex: 'streetName',
-          key: 'streetName',
-          width: 120
+          width: 150,
+          scopedSlots: { customRender: 'areaName' }
         },
         {
           title: '操作',
@@ -336,7 +332,7 @@ export default {
         {
           size: this.staffFrom.pageSize,
           page: this.staffFrom.page,
-         GTE_demandArea: this.staffFrom.areaSmall,
+          GTE_demandArea: this.staffFrom.areaSmall,
           LTE_demandArea: this.staffFrom.areaLarge,
           LIKE_format: this.staffFrom.format,
           LIKE_name: this.staffFrom.name,
@@ -429,7 +425,15 @@ export default {
       this.areaDefaultList[1] = data.streetId
     },
     exportExcel() {
-      request('api/backend/customer/exportCustomer.json', METHOD.GET).then(res => {
+      request('api/backend/customer/exportCustomer.json', METHOD.GET, {
+          GTE_demandArea: this.staffFrom.areaSmall,
+          LTE_demandArea: this.staffFrom.areaLarge,
+          LIKE_format: this.staffFrom.format,
+          LIKE_name: this.staffFrom.name,
+          EQ_areaId: this.staffFrom.areaId,
+          EQ_streetId: this.staffFrom.streetId,
+          sort: 'addDate,desc'
+      }).then(res => {
         if (res.data.data) {
           this.$message.error(res.data.message)
         } else {

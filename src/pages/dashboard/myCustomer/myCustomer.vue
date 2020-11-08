@@ -43,6 +43,7 @@
           <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
+              <span slot="areaName" slot-scope="text, record">{{record.areaName+ ' ' + record.streetName}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
               </span>
@@ -228,14 +229,10 @@ export default {
           scopedSlots: { customRender: 'demandArea' }
         },
         {
-          title: '区域',
+          title: '区域街道',
           dataIndex: 'areaName',
-          key: 'areaName'
-        },
-        {
-          title: '街道',
-          dataIndex: 'streetName',
-          key: 'streetName'
+          key: 'areaName',
+          scopedSlots: { customRender: 'areaName' }
         },
         {
           title: '操作',

@@ -385,7 +385,6 @@ export default {
     handleChange({ fileList }) {
       this.fileList = fileList
       this.form.imagePaths = []
-      console.log(fileList);
       if (fileList.length > 0 && fileList[fileList.length -1].response) {
         fileList.forEach(item => {
                 if (item.response) {
@@ -408,26 +407,14 @@ export default {
           this.fileList = [];
           this.areaDefaultList[0] = res.data.data.areaId
           this.areaDefaultList[1] = res.data.data.streetId
-          // let obj = {
-          //   status: 'done',
-          //   name: '22.png',
-          //   url: '',
-          //   uid: ''
-          // }
-          console.log("fileLit:"+this.fileList);
           res.data.data.imagePaths.forEach((item, index) => {
-            console.log("item:"+item+"___index:"+index);
             var singleImage={
                 status:'done',
                 name:index+"_.png",
                 url:item,
                 uid:index,
             }
-            // // this.$set(obj, 'url', item)
-            // // this.$set(obj, 'uid', '-' + index)
-            // // obj.uid = '-' + index
             this.fileList.push(singleImage);
-            // console.log(this.fileList)
           })
           
         } else {
@@ -493,5 +480,8 @@ export default {
 .ant-upload-select-picture-card .ant-upload-text {
   margin-top: 8px;
   color: #666;
+}
+.up-img {
+  width: 100%;
 }
 </style>
