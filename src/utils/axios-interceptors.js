@@ -40,6 +40,7 @@ const resp403 = {
     const url = options.router.history.current
     if (response.data.code === '777') {
       if (url.name !== '客户详情') {
+        sessionStorage.setItem('cusId', response.data.data.id)
         message.error(`您还没有添加客户【${response.data.data.name}】的跟踪信息`);
       }
       options.router.push({path: '/customerdetails'})

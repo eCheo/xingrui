@@ -19,7 +19,7 @@
         <span>楼层: 第{{form.floorHeight}}层</span>
       </div>
       <div>
-        <span>层高: 共{{form.buildingHeight}}层</span>
+        <span>层高: {{form.buildingHeight}}米</span>
       </div>
       <div>
         <span>开间: {{form.openRoom}}米</span>
@@ -28,7 +28,7 @@
         <span>进深: {{form.deepening}}米</span>
       </div>
       <div>
-        <span>面积大小: {{form.areaSize}}</span>
+        <span>面积大小: {{form.areaSize}}m²</span>
       </div>
       <div>
         <span>租金: {{form.money}}元</span>

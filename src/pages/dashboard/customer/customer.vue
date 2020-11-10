@@ -45,8 +45,9 @@
         <div style="background:#fff;padding:20px 12px;">
           <a-table :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
+              <span slot="brandName" slot-scope="text, record">{{record.brandName === '' ? '--' : record.brandName }}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
-              <span slot="areaName" slot-scope="text, record">{{record.areaName+ ' ' + record.streetName}}</span>
+              <span slot="areaName" slot-scope="text, record">{{(record.areaName || '--')+ ' ' + (record.streetName || '--')}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
                   <a-divider type="vertical" />
@@ -236,7 +237,8 @@ export default {
           title: '品牌名称',
           dataIndex: 'brandName',
           key: 'brandName',
-          width: 138
+          width: 138,
+          scopedSlots: { customRender: 'brandName' }
         },
         {
           title: '需求面积',

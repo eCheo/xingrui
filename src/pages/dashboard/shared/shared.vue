@@ -2,23 +2,36 @@
   <div class="analysis" style="margin-bottom:20px;">
     <a-row style="margin-top: 0" :gutter="[24, 24]">
       <a-col>
-        <div class="cas-content" style="background:#fff;padding:12px 107px;">
-          <div>
-            <span>客户名称：</span>
-            <a-input v-model="staffFrom.name" style="width:300px;" placeholder="请输入客户名称" />
-          </div>
-          <div>
-            <span>需求面积：</span>
-            <a-input v-model="staffFrom.areaSmall" style="width:300px;" placeholder="请输入需求面积" />
-            <span>~</span>
-            <a-input v-model="staffFrom.areaLarge" style="width:300px;" placeholder="请输入需求面积" />
-          </div>
-          <div>
-            <span style="margin-right:28px;">业态：</span>
-            <a-input v-model="staffFrom.format" style="width:300px;" placeholder="请输入业态" />
-            <a-button @click="getStaff(1)" type="primary" style="margin-left: 15px;">查询</a-button>
-            <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">添加客户</a-button>
-          </div>
+        <div class="cas-content">
+          <div class="cas-box">
+            <div>
+                <span>客户名称：</span>
+                <a-input v-model="staffFrom.name" style="width:75%;" placeholder="请输入客户名称" />
+            </div>
+            <div>
+                <span>需求面积：</span>
+                <a-input suffix="m²" v-model="staffFrom.areaSmall" style="width:36%;" placeholder="请输入需求面积" />
+                <span>~</span>
+                <a-input suffix="m²" v-model="staffFrom.areaLarge" style="width:36%;" placeholder="请输入需求面积" />
+            </div>
+            <div>
+              <span style="margin-right:10px;">需求区域:</span>
+              <a-cascader
+                style="width:75%;"
+                change-on-select
+                :options="options"
+                :show-search="{ filter }"
+                placeholder="请选择区域街道"
+                @change="onSelectChange"
+              />
+            </div>
+            <div style="width:100%;">
+              <span style="margin:0 0 0 28px;">业态：</span>
+              <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
+              <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">查询</a-button>
+              <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">添加客户</a-button>
+            </div>
+            </div>
         </div>
       </a-col>
       <a-col>
@@ -106,7 +119,21 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="demandAddress" label="需求地址" prop="demandAddress">
+        <a-form-model-item ref="areaId" label="需求区域" prop="areaId">
+          <a-cascader
+            :options="options"
+            :show-search="{ filter }"
+            :default-value='areaDefaultList'
+            placeholder="请选择区域街道"
+            @change="onChange"
+            @blur="
+              () => {
+                $refs.areaId.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="demandAddress" label="详细地址" prop="demandAddress">
           <a-textarea
             v-model="form.demandAddress"
             @blur="
@@ -147,7 +174,9 @@ export default {
         pageSize: 10,
         areaLarge: '',
         areaSmall: '',
-        format: ''
+        format: '',
+        areaId: '',
+        streetId: ''
       },
       staffList: [
         {
@@ -241,14 +270,20 @@ export default {
         format: '',
         demandArea: '',
         demandAddress: '',
-        brandName: ''
+        brandName: '',
+        deadAreaEnd: '',
+        areaId: '',
+        streetId: ''
       },
-      editType: 'edit'
+      editType: 'edit',
+      options: [],
+      areaDefaultList: []
     }
   },
   created() {
     setTimeout(() => (this.loading = !this.loading), 1000)
     this.getStaff(1)
+    this.getAddress()
   },
   methods: {
     getStaff(page, pageSize) {
@@ -259,8 +294,13 @@ export default {
         size: this.staffFrom.pageSize,
         page: this.staffFrom.page,
         EQ_customerStatus: 'Share',
+        GTE_demandArea: this.staffFrom.areaSmall,
+        LTE_demandArea: this.staffFrom.areaLarge,
         LIKE_format: this.staffFrom.format,
-        LIKE_name: this.staffFrom.name
+        LIKE_name: this.staffFrom.name,
+        EQ_areaId: this.staffFrom.areaId,
+        EQ_streetId: this.staffFrom.streetId,
+        sort: 'addDate,desc'
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.staffData = res.data.data.content
@@ -345,6 +385,29 @@ export default {
       this.form.demandAddress = data.demandAddress
       this.form.brandName = data.brandName
       this.form.id = data.id
+    },
+    filter(inputValue, path) {
+      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    },
+    onChange(value) {
+      this.form.areaId = value[0];
+      this.form.streetId = value[1];
+    },
+    onSelectChange(value) {
+      this.staffFrom.areaId = value[0];
+      this.staffFrom.streetId = value[1];
+    },
+    getAddress() {
+      request('/api/backend/customer/findCityAll.json', METHOD.GET).then(res => {
+        if (res.status === 200 && res.data.code === '200') {
+          res.data.data.forEach(item => {
+            item.children = item.children.map(it => {return {value:it.id, label: it.name}})
+          })
+         this.options = res.data.data.map(item => {return {value:item.id, label: item.name,children: item.children}})
+        } else {
+          this.$message.error(res.data.message);
+        }
+      })
     }
   },
   watch: {
@@ -359,11 +422,17 @@ export default {
 
 <style lang="less" scoped>
 .cas-content {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  div {
-    margin: 0 40px 15px 0;
+  background: #fff;
+  padding:12px;
+  .cas-box {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1366px;
+    margin: 0 auto;
+    div {
+      margin: 0 0 15px 0;
+      width: 33%;
+    }
   }
 }
 </style>
