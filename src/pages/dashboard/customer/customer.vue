@@ -292,11 +292,7 @@ export default {
           {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         demandAddress: [
-          { required: true, message: '请输入需求地址', trigger: 'blur' },
           { max: 50, message: '地址不能超过50个字', trigger: 'blur' }
-        ],
-        areaId: [
-          { required: true, message: '请选择区域街道', trigger: 'blur' }
         ]
       },
       labelCol: { span: 4 },

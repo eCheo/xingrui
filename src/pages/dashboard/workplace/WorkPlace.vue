@@ -291,6 +291,6 @@ export default {
   }
 }
 .ant-card-grid {
-  width: 25%;
+  width: 31%;
 }
 </style>

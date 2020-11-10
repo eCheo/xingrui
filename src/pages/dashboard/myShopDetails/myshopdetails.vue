@@ -39,6 +39,9 @@
       <div>
         <span>是否已租: {{!form.isRent ? '未租' : '已租'}}</span>
       </div>
+      <div>
+        <span>备注：{{form.remarks}}</span>
+      </div>
     </div>
     <div class="cus-img">
       <p style="font-size:16px;color:#333;">铺源照片</p>
@@ -247,7 +250,7 @@ export default {
   img {
     width: 300px;
     height: 250px;
-    margin-right: 15px;
+    margin:0 15px 10px 0;
   }
 }
 .bottom {

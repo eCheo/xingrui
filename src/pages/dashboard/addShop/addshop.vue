@@ -155,6 +155,16 @@
             "
           />
         </a-form-model-item>
+        <a-form-model-item ref="remarks" label="备注" prop="remarks">
+          <a-textarea
+            v-model="form.remarks"
+            @blur="
+              () => {
+                $refs.remarks.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
       </a-form-model>
       <p>铺源照片</p>
       <a-upload
@@ -251,6 +261,10 @@ export default {
         ],
         areaId: [
           { required: true, message: '请选择区域街道', trigger: 'blur' }
+        ],
+        remarks: [
+          { required: true, message: '请输入备注', trigger: 'blur' },
+          { max: 100, message: '备注不能超过100个字', trigger: 'blur' }
         ]
       },
       labelCol: { span: 3 },
@@ -269,7 +283,8 @@ export default {
         paymentMethod: '',
         imagePaths: [],
         areaId: '',
-        streetId: ''
+        streetId: '',
+        remarks: ''
       },
       previewVisible: false,
       previewImage: '',
