@@ -32,9 +32,6 @@
             </a-form-item>
           </a-tab-pane>
         </a-tabs>
-        <div>
-          <a style="float: right">忘记密码</a>
-        </div>
         <a-form-item>
           <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
         </a-form-item>

@@ -44,7 +44,7 @@
               <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="brandName" slot-scope="text, record">{{record.brandName === '' ? '--' : record.brandName }}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
-              <span slot="areaName" slot-scope="text, record">{{(record.areaName || '')+ ' ' + (record.streetName || '')}}</span>
+              <span slot="areaName" slot-scope="text, record">{{(record.areaName || '--')+ ' ' + (record.streetName || '--')}}</span>
               <span slot="action" slot-scope="text, record">
                   <a @click="goDetails(record)">详情</a>
               </span>
@@ -247,9 +247,11 @@ export default {
       pagination: {
         defaultPageSize: 10,
         showSizeChanger: true,
+        total: 0,
         showTotal: total => `共${total}条数据`,
-        pageSizeOption: ['5', '10', '15', '20'],
-        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize)
+        pageSizeOptions: ['10', '20', '30', '40'],
+        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize),
+        onChange: (current, pageSize) => this.getStaff(current, pageSize)
       },
       rules: {
         name: [
@@ -321,6 +323,7 @@ export default {
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content
+            this.pagination.total = res.data.data.totalElements
             this.tabLoading = false
           } else {
             this.$message.error(res.data.message)

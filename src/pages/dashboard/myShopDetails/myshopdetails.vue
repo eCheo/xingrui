@@ -1,7 +1,7 @@
 
 <template>
   <div class="cus-top" style="margin-bottom:20px;">
-    <p>区域位置：{{form.area}}</p>
+    <p>区域位置：{{form.area || '--'}}</p>
     <div class="cus-box">
       <div>
         <span>业主姓名: {{form.name}}</span>
@@ -13,7 +13,7 @@
         <span>电话号码: {{form.phone}}</span>
       </div>
       <div>
-        <span>区域街道: {{form.areaName+''+form.streetName}}</span>
+        <span>区域街道: {{(form.areaName || '--')+''+(form.streetName || '--')}}</span>
       </div>
       <div>
         <span>楼层: 第{{form.floorHeight}}层</span>

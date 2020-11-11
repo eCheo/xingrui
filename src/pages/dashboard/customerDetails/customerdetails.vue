@@ -8,22 +8,22 @@
                     <span>客户名称：{{cusInfo.name}}</span>
                 </div>
                 <div>
-                    <span>性别：{{cusInfo.sex.message || ''}}</span>
+                    <span>性别：{{cusInfo.sex.message || '--'}}</span>
                 </div>
                 <div>
-                    <span>品牌名称：{{cusInfo.brandName}}</span>
+                    <span>品牌名称：{{cusInfo.brandName || '--'}}</span>
                 </div>
                 <div>
-                    <span>业态：{{cusInfo.format}}</span>
+                    <span>业态：{{cusInfo.format || '--'}}</span>
                 </div>
                 <div>
-                    <span>需求面积：{{cusInfo.demandArea}} m²</span>
+                    <span>需求面积：{{(cusInfo.demandArea ? cusInfo.demandArea + 'm²' : '--') +'~'+ (cusInfo.deadAreaEnd ? cusInfo.deadAreaEnd +'m²' : '--')}}</span>
                 </div>
                 <div>
-                    <span>需求区域：{{cusInfo.areaName + cusInfo.streetName}}</span>
+                    <span>需求区域：{{(cusInfo.areaName || '--') +''+ (cusInfo.streetName || '--')}}</span>
                 </div>
                 <div style="width: 48%;">
-                    <span>详细地址：{{cusInfo.demandAddress}}</span>
+                    <span>详细地址：{{cusInfo.demandAddress || '--'}}</span>
                 </div>
             </div>
             <div>
@@ -86,9 +86,11 @@ export default {
       pagination: {
         defaultPageSize: 10,
         showSizeChanger: true,
+        total: 0,
         showTotal: total => `共${total}条数据`,
-        pageSizeOption: ['5', '10', '15', '20'],
-        onShowSizeChange: (current, pageSize) => this.getTrackInfo(current, pageSize)
+        pageSizeOptions: ['10', '20', '30', '40'],
+        onShowSizeChange: (current, pageSize) => this.getTrackInfo(current, pageSize),
+        onChange: (current, pageSize) => this.getTrackInfo(current, pageSize)
       },
       track: [],
       remarks: ''
@@ -129,6 +131,7 @@ export default {
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.track = res.data.data.content
+            this.pagination.total = res.data.data.totalElements
             this.tabLoading = false
           } else {
             this.$message.error(res.data.message)

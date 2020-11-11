@@ -29,7 +29,6 @@
               <span style="margin:0 0 0 28px;">业态：</span>
               <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
               <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">查询</a-button>
-              <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">添加客户</a-button>
             </div>
             </div>
         </div>
@@ -43,10 +42,12 @@
             :data-source="staffData"
           >
             <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
-            <span slot="demandArea" slot-scope="text">{{text+' m²'}}</span>
-            <span slot="action" slot-scope="text, record">
-              <a @click="goDetails(record)">详情</a>
-            </span>
+              <span slot="brandName" slot-scope="text, record">{{record.brandName === '' ? '--' : record.brandName }}</span>
+              <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
+              <span slot="areaName" slot-scope="text, record">{{(record.areaName || '--')+ ' ' + (record.streetName || '--')}}</span>
+              <span slot="action" slot-scope="text, record">
+                  <a @click="goDetails(record)">详情</a>
+              </span>
           </a-table>
         </div>
       </a-col>
@@ -198,7 +199,8 @@ export default {
         {
           title: '品牌名称',
           dataIndex: 'brandName',
-          key: 'brandName'
+          key: 'brandName',
+          scopedSlots: { customRender: 'brandName' }
         },
         {
           title: '需求面积',
@@ -207,9 +209,10 @@ export default {
           scopedSlots: { customRender: 'demandArea' }
         },
         {
-          title: '需求区域',
-          dataIndex: 'demandAddress',
-          key: 'demandAddress'
+          title: '区域街道',
+          dataIndex: 'areaName',
+          key: 'areaName',
+          scopedSlots: { customRender: 'areaName' }
         },
         {
           title: '操作',
@@ -222,10 +225,12 @@ export default {
       pagination: {
         defaultPageSize: 10,
         showSizeChanger: true,
+        total: 0,
         showTotal: total => `共${total}条数据`,
-        pageSizeOption: ['5', '10', '15', '20'],
+        pageSizeOption: ['10', '20', '30', '40'],
         onShowSizeChange: (current, pageSize) =>
-          this.getStaff(current, pageSize)
+          this.getStaff(current, pageSize),
+        onChange: (current, pageSize) => this.getStaff(current, pageSize)
       },
       rules: {
         name: [
@@ -304,6 +309,7 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.staffData = res.data.data.content
+          this.pagination.total = res.data.data.totalElements
           this.tabLoading = false
         } else {
           this.$message.error(res.data.message)

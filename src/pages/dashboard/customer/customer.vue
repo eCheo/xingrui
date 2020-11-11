@@ -265,10 +265,13 @@ export default {
       staffData: [],
       pagination: {
         defaultPageSize: 10,
+        defaultCurrent: 1,
+        total: 0,
         showSizeChanger: true,
         showTotal: total => `共${total}条数据`,
-        pageSizeOption: ['5', '10', '15', '20'],
-        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize)
+        pageSizeOptions: ['10', '20', '30', '40'],
+        onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize),
+        onChange: (current, pageSize) => this.getStaff(current, pageSize)
       },
       rules: {
         name: [
@@ -340,6 +343,7 @@ export default {
         }).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content
+            this.pagination.total = res.data.data.totalElements
             this.tabLoading = false
           } else {
             this.$message.error(res.data.message)
@@ -438,7 +442,7 @@ export default {
           const elink = document.createElement('a')
           elink.download = '客户列表'
           elink.style.display = 'none'
-          elink.href = 'http://47.108.133.94:8080/api/backend/customer/exportCustomer.json'
+          elink.href = `http://47.108.133.94:8080/api/backend/customer/exportCustomer.json`
           document.body.appendChild(elink)
           elink.click()
           URL.revokeObjectURL(elink.href) // 释放URL 对象
