@@ -1,14 +1,14 @@
 
 <template>
   <div class="set-content">
-    <a-card-grid style="margin:15px 15px 0 0;background-color:#fff;">
+    <a-card-grid style="margin:15px 15px 0 0;background-color:#fff;display:inline-block;">
       <a-card :bordered="false" :body-style="{padding: 0}">
         <a-card-meta>
           <div slot="title" class="card-title">
             <span>共享池天数</span>
           </div>
         </a-card-meta>
-         <a-input suffix='天' v-model="day" style="margin-top:15px;width:200px" placeholder="天数" />
+         <a-input suffix='天' v-model="day" style="margin-top:15px;" placeholder="天数" />
          <div style="margin-top:20px">
            <a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="confirm">
             <template slot="title">
@@ -19,7 +19,7 @@
          </div>
       </a-card>
     </a-card-grid>
-    <a-card-grid style="margin:15px 15px 0 0;background-color:#fff;height: 163px;">
+    <a-card-grid style="margin:15px 15px 0 0;background-color:#fff;height: 163px;display:inline-block;">
       <a-card :bordered="false" :body-style="{padding: 0}">
         <a-card-meta>
           <div slot="title" class="card-title">
@@ -113,5 +113,12 @@ export default {
 .set-content {
   padding: 20px;
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+@media screen and (min-width: 320px) and (max-width: 1023px){
+  .set-content .ant-card-grid {
+    width: 100%;
+  }
 }
 </style>
