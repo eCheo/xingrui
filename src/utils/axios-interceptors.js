@@ -46,6 +46,9 @@ const resp403 = {
       options.router.push({path: '/customerdetails'})
       return 
     }
+    if (response.data.code === '778') { 
+      options.router.push({path: '/login'});
+    }
     return response
   }
 }
