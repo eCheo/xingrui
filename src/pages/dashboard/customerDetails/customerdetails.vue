@@ -26,7 +26,7 @@
                     <span>需求区域：{{(cusInfo.areaName || '--') +''+ (cusInfo.streetName || '--')}}</span>
                 </div>
                 <div style="width: 48%;">
-                    <span>详细地址：{{cusInfo.demandAddress || '--'}}</span>
+                    <span>备注：{{cusInfo.demandAddress || '--'}}</span>
                 </div>
             </div>
             <div>

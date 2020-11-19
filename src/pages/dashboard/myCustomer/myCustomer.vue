@@ -145,6 +145,7 @@
           <a-cascader
             :options="options"
             :show-search="{ filter }"
+            change-on-select
             :default-value='areaDefaultList'
             placeholder="请选择区域街道"
             @change="onChange"
@@ -155,7 +156,7 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="demandAddress" label="详细地址" prop="demandAddress">
+        <a-form-model-item ref="demandAddress" label="备注" prop="demandAddress">
           <a-textarea
             v-model="form.demandAddress"
             @blur="
@@ -272,7 +273,7 @@ export default {
           {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         demandAddress: [
-          { max: 50, message: '地址不能超过50个字', trigger: 'blur' }
+          { max: 50, message: '备注不能超过50个字', trigger: 'blur' }
         ],
         deadAreaEnd: [
           { required: true, message: '请输入需求面积', trigger: 'blur' },
@@ -413,7 +414,7 @@ export default {
     },
     onChange(value) {
       this.form.areaId = value[0];
-      this.form.streetId = value[1];
+      this.form.streetId = value[1] || null;
     },
     getAddress() {
       request('/api/backend/customer/findCityAll.json', METHOD.GET).then(res => {
