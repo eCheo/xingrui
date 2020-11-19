@@ -42,7 +42,7 @@
             :data-source="staffData"
           >
             <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
-              <span slot="brandName" slot-scope="text, record">{{record.brandName === '' ? '--' : record.brandName }}</span>
+              <span slot="memberName" slot-scope="text, record">{{record.memberName === '' ? '--' : record.memberName }}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
               <span slot="areaName" slot-scope="text, record">{{(record.areaName || '--')+ ' ' + (record.streetName || '--')}}</span>
               <span slot="action" slot-scope="text, record">
@@ -197,10 +197,10 @@ export default {
           key: 'format'
         },
         {
-          title: '品牌名称',
-          dataIndex: 'brandName',
-          key: 'brandName',
-          scopedSlots: { customRender: 'brandName' }
+          title: '录入人',
+          dataIndex: 'memberName',
+          key: 'memberName',
+          scopedSlots: { customRender: 'memberName' }
         },
         {
           title: '需求面积',
@@ -234,8 +234,8 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
+          { required: true, message: '请输入客户名称', trigger: 'blur' },
+          { max: 5, message: '客户名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [{ required: true, validator: phoneValid, trigger: 'blur' }],
         sex: [

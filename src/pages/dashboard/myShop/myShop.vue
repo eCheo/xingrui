@@ -267,7 +267,7 @@ export default {
       },
       staffList: [
         {
-          title: '客户名称',
+          title: '业主名称',
           dataIndex: 'name',
           key: 'name',
           width: 118
@@ -338,8 +338,8 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
+          { required: true, message: '请输入业主名称', trigger: 'blur' },
+          { max: 5, message: '业主名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [
          { required: true, validator:phoneValid, trigger: 'blur' }

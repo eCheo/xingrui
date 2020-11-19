@@ -11,6 +11,9 @@
                     <span>性别：{{cusInfo.sex.message || '--'}}</span>
                 </div>
                 <div>
+                    <span>录入人：{{cusInfo.memberName || '--'}}</span>
+                </div>
+                <div>
                     <span>品牌名称：{{cusInfo.brandName || '--'}}</span>
                 </div>
                 <div>
