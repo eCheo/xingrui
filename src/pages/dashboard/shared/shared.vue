@@ -25,10 +25,19 @@
                 @change="onSelectChange"
               />
             </div>
-            <div style="width:100%;">
-              <span style="margin:0 0 0 28px;">业态：</span>
-              <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
-              <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">查询</a-button>
+            <div>
+                <span>电话号码：</span>
+                <a-input v-model="staffFrom.phone" style="width:75%;" placeholder="请输入电话号码" />
+            </div>
+            <div style="width: 64%;">
+                <span style="margin:0 0px 0 28px;">业态：</span>
+                <a-input v-model="staffFrom.format" style="width:38.7%;" placeholder="请输入业态" />
+                <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">
+                    查询
+                </a-button>
+                <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
+                    添加客户
+                </a-button>
             </div>
             </div>
         </div>
@@ -177,7 +186,8 @@ export default {
         areaSmall: '',
         format: '',
         areaId: '',
-        streetId: ''
+        streetId: '',
+        phone: ''
       },
       staffList: [
         {
@@ -225,6 +235,7 @@ export default {
       pagination: {
         defaultPageSize: 10,
         showSizeChanger: true,
+        showQuickJumper: true,
         total: 0,
         showTotal: total => `共${total}条数据`,
         pageSizeOption: ['10', '20', '30', '40'],
@@ -305,6 +316,7 @@ export default {
         LIKE_name: this.staffFrom.name,
         EQ_areaId: this.staffFrom.areaId,
         EQ_streetId: this.staffFrom.streetId,
+        EQ_phone: this.staffFrom.phone,
         sort: 'addDate,desc'
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {

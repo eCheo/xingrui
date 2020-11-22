@@ -25,9 +25,13 @@
                 @change="onSelectChange"
               />
             </div>
-            <div style="width:100%;">
+            <div>
+                <span>电话号码：</span>
+                <a-input v-model="staffFrom.phone" style="width:75%;" placeholder="请输入电话号码" />
+            </div>
+            <div style="width: 64%;">
                 <span style="margin:0 0px 0 28px;">业态：</span>
-                <a-input v-model="staffFrom.format" style="width:24.7%;" placeholder="请输入业态" />
+                <a-input v-model="staffFrom.format" style="width:38.7%;" placeholder="请输入业态" />
                 <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">
                     查询
                 </a-button>
@@ -269,6 +273,7 @@ export default {
         defaultCurrent: 1,
         total: 0,
         showSizeChanger: true,
+        showQuickJumper: true,
         showTotal: total => `共${total}条数据`,
         pageSizeOptions: ['10', '20', '30', '40'],
         onShowSizeChange: (current, pageSize) => this.getStaff(current, pageSize),

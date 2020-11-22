@@ -34,7 +34,6 @@ const resp403 = {
       message.error(`请求被拒绝`)
     } 
     if (response.data.code === '209') {
-      message.error(response.data.message)
       options.router.push('/login')
     }
     const url = options.router.history.current

@@ -29,10 +29,10 @@ const progressStart = (to, from, next) => {
  * @param next
  * @param options
  */
-const loginGuard = (to, from, next, options) => {
-  const {message} = options
+const loginGuard = (to, from, next) => {
+  // const {message} = options
   if (!loginIgnore.includes(to) && !checkAuthorization()) {
-    message.warning('登录已失效，请重新登录')
+    // message.warning('登录已失效，请重新登录')
     next({path: '/login'})
   } else {
     next()

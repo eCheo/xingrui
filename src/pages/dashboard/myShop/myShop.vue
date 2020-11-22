@@ -9,8 +9,8 @@
               <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入业主名称" />
             </div>
             <div>
-              <span>付款方式：</span>
-              <a-input v-model="staffFrom.LIKE_paymentMethod" style="width:75%;" placeholder="付款方式" />
+              <span>电话号码：</span>
+              <a-input v-model="staffFrom.EQ_phone" style="width:75%;" placeholder="电话号码" />
             </div>
             <div>
               <span>是否已租：</span>
@@ -254,7 +254,7 @@ export default {
         page: '1',
         LIKE_name: '',
         pageSize: 10,
-        LIKE_paymentMethod: '',
+        EQ_phone: '',
         LIKE_area: '',
         GTE_areaSize: '',
         LTE_areaSize: '',
@@ -330,6 +330,7 @@ export default {
       pagination: {
         defaultPageSize: 10,
         showSizeChanger: true,
+        showQuickJumper: true,
         total: 0,
         showTotal: total => `共${total}条数据`,
         pageSizeOption: ['10', '20', '30', '40'],

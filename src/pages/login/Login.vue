@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="login">
-      <a-form @submit="onSubmit" :form="form">
+      <a-form :form="form">
         <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
           <a-tab-pane tab="账户密码登录" key="1">
             <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
@@ -33,7 +33,7 @@
           </a-tab-pane>
         </a-tabs>
         <a-form-item>
-          <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
+          <a-button @click="onSubmit" :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
         </a-form-item>
       </a-form>
     </div>

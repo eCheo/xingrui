@@ -90,6 +90,7 @@ export default {
         defaultPageSize: 10,
         showSizeChanger: true,
         total: 0,
+        showQuickJumper: true,
         showTotal: total => `共${total}条数据`,
         pageSizeOptions: ['10', '20', '30', '40'],
         onShowSizeChange: (current, pageSize) => this.getTrackInfo(current, pageSize),
