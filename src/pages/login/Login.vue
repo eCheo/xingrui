@@ -7,35 +7,47 @@
       </div>
     </div>
     <div class="login">
-      <a-form :form="form">
+      <a-form-model ref="ruleForm"
+        :model="form"
+        :rules="rules">
         <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
           <a-tab-pane tab="账户密码登录" key="1">
             <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
-            <a-form-item>
+            <a-form-model-item ref="account" prop="account">
               <a-input
                 autocomplete="autocomplete"
                 size="large"
-                v-decorator="['name', {rules: [{ required: true, message: '请输入账户名', whitespace: true}]}]"
+                v-model="form.account"
+                @blur="
+                  () => {
+                    $refs.account.onFieldBlur();
+                  }
+                "
               >
                 <a-icon slot="prefix" type="user" />
               </a-input>
-            </a-form-item>
-            <a-form-item>
+            </a-form-model-item>
+            <a-form-model-item ref="password" prop="password">
               <a-input
                 size="large"
                 autocomplete="autocomplete"
                 type="password"
-                v-decorator="['password', {rules: [{ required: true, message: '请输入密码', whitespace: true}]}]"
+                v-model="form.password"
+                @blur="
+                  () => {
+                    $refs.password.onFieldBlur();
+                  }
+                "
               >
                 <a-icon slot="prefix" type="lock" />
               </a-input>
-            </a-form-item>
+            </a-form-model-item>
           </a-tab-pane>
         </a-tabs>
         <a-form-item>
           <a-button @click="onSubmit" :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
         </a-form-item>
-      </a-form>
+      </a-form-model>
     </div>
   </common-layout>
 </template>
@@ -54,7 +66,18 @@ export default {
     return {
       logging: false,
       error: '',
-      form: this.$form.createForm(this)
+      form: {
+        account: '',
+        password: ''
+      },
+      rules: {
+        account: [
+          { required: true, message: '请输入账户名', trigger: 'blur', whitespace: true}
+        ],
+        password: [
+          { required: true,  message: '请输入密码', trigger: 'blur', whitespace: true}
+        ]
+      }
     }
   },
   computed: {
@@ -66,11 +89,11 @@ export default {
     ...mapMutations('account', ['setUser', 'setPermissions', 'setRoles']),
     onSubmit (e) {
       e.preventDefault()
-      this.form.validateFields((err) => {
-        if (!err) {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
           this.logging = true
-          const name = this.form.getFieldValue('name')
-          const password = this.form.getFieldValue('password')
+          const name = this.form.account
+          const password = this.form.password
           login(name, password).then(res => {
             if (res.status === 200 && res.data.code === '200') {
               this.afterLogin(res);
