@@ -176,6 +176,7 @@ export default {
       $route: {
         handler() {
           this.getStaff(1)
+          this.getTrackInfo(1)
         }
       }
   }

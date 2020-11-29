@@ -35,9 +35,6 @@
                 <a-button @click="getStaff(1)" type="primary" style="margin-left: 16px;">
                     查询
                 </a-button>
-                <a-button @click="claerStaffInfo" type="primary" style="margin-left: 15px;">
-                    添加客户
-                </a-button>
             </div>
             </div>
         </div>
