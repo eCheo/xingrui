@@ -594,7 +594,7 @@ export default {
   watch: {
     $route: {
       handler() {
-        this.getStaff(1)
+        this.getStaff(this.staffFrom.page)
       }
     }
   }
