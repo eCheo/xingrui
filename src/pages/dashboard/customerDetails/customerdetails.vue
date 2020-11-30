@@ -14,6 +14,9 @@
                     <span>录入人：{{cusInfo.memberName || '--'}}</span>
                 </div>
                 <div>
+                    <span>录入时间：{{cusInfo.addDate || '--'}}</span>
+                </div>
+                <div>
                     <span>品牌名称：{{cusInfo.brandName || '--'}}</span>
                 </div>
                 <div>
