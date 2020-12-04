@@ -47,7 +47,8 @@
             :columns="staffList"
             :data-source="staffData"
           >
-            <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
+              <span slot="name" slot-scope="text, record" :class="{'sh-red':record.isRecord}">{{record.name}}</span>
+              <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
               <span slot="memberName" slot-scope="text, record">{{record.memberName === '' ? '--' : record.memberName }}</span>
               <span slot="demandArea" slot-scope="text, record">{{record.demandArea + ' m²' + '~' + record.deadAreaEnd + ' m²'}}</span>
               <span slot="areaName" slot-scope="text, record">{{(record.areaName || '--')+ ' ' + (record.streetName || '--')}}</span>
@@ -190,7 +191,8 @@ export default {
         {
           title: '客户名称',
           dataIndex: 'name',
-          key: 'name'
+          key: 'name',
+          scopedSlots: { customRender: 'name' }
         },
         {
           title: '性别',
@@ -449,5 +451,9 @@ export default {
       width: 33%;
     }
   }
+}
+.sh-red {
+  color: rgb(205, 0, 0);
+  font-weight: bold;
 }
 </style>
