@@ -82,7 +82,7 @@ export default {
       })
     },
     confirm() {
-      request('api/backend/customer/findBizConfig.json', METHOD.POST, {
+      request('/api/backend/customer/systemConfig.json', METHOD.POST, {
         day: this.day
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
