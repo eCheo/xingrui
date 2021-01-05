@@ -105,7 +105,7 @@ export default {
   },
   created() {
     setTimeout(() => this.loading = !this.loading, 1000)
-    this.getStaff(1)
+    this.getStaff()
     this.getTrackInfo(1)
   },
   methods: {
@@ -165,7 +165,7 @@ export default {
         id: sessionStorage.getItem('cusId')
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
-          this.getStaff(1);
+          this.getStaff();
         }
       })
     }
@@ -178,7 +178,7 @@ export default {
   watch: {
       $route: {
         handler() {
-          this.getStaff(1)
+          this.getStaff()
           this.getTrackInfo(1)
         }
       }
