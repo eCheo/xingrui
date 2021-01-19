@@ -97,7 +97,7 @@
 <script>
 import {request, METHOD} from '@/utils/request'
 const phoneValid = (rule, value, callback) => {
-  let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
+  let reg = /^[0-9]{11}$/
   if (value === '') {
     return callback(new Error('请输入手机号'))
   } else if (!reg.test(value)) {
