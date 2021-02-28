@@ -515,7 +515,6 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.form = res.data.data
-          this.form.sex = res.data.data.sex.name
           this.fileList = [];
           this.areaDefaultList[0] = res.data.data.areaId
           this.areaDefaultList[1] = res.data.data.streetId
