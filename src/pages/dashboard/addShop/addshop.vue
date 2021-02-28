@@ -46,7 +46,7 @@
           />
         </a-form-model-item>
         <a-form-model-item ref="cooperationTime" label="合作时间" prop="cooperationTime">
-          <a-date-picker :locale="locale"  v-model="form.cooperationTime" show-time placeholder="选择合作时间" @blur="
+          <a-date-picker :locale="locale"  v-model="form.cooperationTime" placeholder="选择合作时间" @blur="
               () => {
                 $refs.cooperationTime.onFieldBlur();
               }
@@ -403,30 +403,18 @@ export default {
   methods: {
     createShop() {
         this.$refs.ruleForm.validate(valid => {
-          console.log(valid && this.form.imagePaths.length > 0)
         if (valid && this.form.imagePaths.length > 0) {
-          // console.log(this.rentFreePeriodEnd.substring(this.rentFreePeriodEnd.indexOf('-') +1, this.rentFreePeriodEnd.length));
-          // let endTime = this.rentFreePeriodEnd.substring(this.rentFreePeriodEnd.indexOf('-') +1, this.rentFreePeriodEnd.length);
-          // console.log(Number(endTime));
-          //   if (Number(endTime) < 10) {
-          //     this.rentFreePeriodEnd = endTime.substring(1,2);
-          //   } else {
-          //     this.rentFreePeriodEnd = endTime;
-          //   }
-          //   let startTime = this.rentFreePeriodStart.substring(this.rentFreePeriodStart.indexOf('-') +1, this.rentFreePeriodStart.length);
-          //   if (Number(startTime) < 10) {
-          //     this.rentFreePeriodStart = startTime.substring(1,2);
-          //   } else {
-          //     this.rentFreePeriodStart = startTime;
-          //   }
-            console.log('2222');
             this.butLoading = true;
             request('/api/backend/shop/create.json', METHOD.POST,
                 this.form).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     this.butLoading = false
                     this.$message.success('添加成功');
-                    this.$router.push('/shop');
+                    if (this.memberType === 'front') {
+                      this.$router.push('/myshop');
+                    } else {
+                      this.$router.push('/shop');
+                    }
                 } else {
                     this.$message.error(res.data.message)
                     this.butLoading = false
@@ -488,6 +476,11 @@ export default {
           this.$message.error(res.data.message);
         }
       })
+    }
+  },
+  computed: {
+    memberType() {
+      return this.$store.state.account.userInfo.memberType
     }
   }
 }

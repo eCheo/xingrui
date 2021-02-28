@@ -46,20 +46,11 @@
           />
         </a-form-model-item>
         <a-form-model-item ref="cooperationTime" label="合作时间" prop="cooperationTime">
-          <a-date-picker :locale="locale"  v-model="form.cooperationTime" show-time placeholder="选择合作时间" @blur="
+          <a-date-picker :locale="locale"  v-model="form.cooperationTime" placeholder="选择合作时间" @blur="
               () => {
                 $refs.cooperationTime.onFieldBlur();
               }
             " @change="cooperationChange" />
-          <!-- <a-input
-            style="width:150px"
-            v-model="form.cooperationTime"
-            @blur="
-              () => {
-                $refs.cooperationTime.onFieldBlur();
-              }
-            "
-          /> -->
         </a-form-model-item>
         <a-form-model-item class="de-left" style="display:inline-block;" ref="rentFreePeriodStart" label="免租期" prop="rentFreePeriodStart">
            <!-- <a-month-picker v-model="form.rentFreePeriodStart"

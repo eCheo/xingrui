@@ -51,7 +51,7 @@
                 @click="$router.push('/addshop')"
                 type="primary"
                 style="margin-left: 15px;"
-              >添加铺源</a-button>
+              >添加项目</a-button>
             </div>
           </div>
         </div>
