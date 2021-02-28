@@ -5,8 +5,8 @@
         <div class="cas-content">
           <div class="cas-box">
             <div>
-              <span>业主名称：</span>
-              <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入业主名称" />
+              <span>项目名称：</span>
+              <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入项目名称" />
             </div>
             <div>
               <span>电话号码：</span>
@@ -59,7 +59,7 @@
       <a-col>
         <div style="background:#fff;padding:20px 12px;">
           <a-table  :pagination='pagination' :loading='tabLoading' :columns="staffList" :data-source="staffData">
-              <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
+              <!-- <span slot="age" slot-scope="text, record">{{record.sex.message}}</span> -->
               <span slot="isRent" slot-scope="isRent">{{isRent ? '是': '否'}}</span>
               <span slot="areaSize" slot-scope="text">{{text+' m²'}}</span>
               <span slot="buildingHeight" slot-scope="text, record">{{record.buildingHeight+'/'+record.floorHeight}}</span>
@@ -279,10 +279,10 @@ export default {
           width: 138
         },
         {
-          title: '性别',
-          dataIndex: 'age',
-          key: 'age',
-          scopedSlots: { customRender: 'age' },
+          title: '对接人',
+          dataIndex: 'faceToFaceName',
+          key: 'faceToFaceName',
+          scopedSlots: { customRender: 'faceToFaceName' },
           width: 70
         },
         {

@@ -96,12 +96,12 @@ store.dispatch('account/getUserInfo').then(user => {
   routers.routes.forEach(item => {
     if (item.children) {
       item.children.forEach(it => {
-        if (it.name !== '首页' || it.name !== '编辑铺源' || it.name !== '新增铺源' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '铺源详情') {
-          if (user.data.memberType === 'front' && (it.name === '共享池' || it.name === '铺源' || it.name === '我的客户')) {
+        if (it.name !== '首页' || it.name !== '编辑项目' || it.name !== '新增项目' || it.name !== '客户详情' || it.name !== '修改密码' || it.name !== '项目详情') {
+          if (user.data.memberType === 'front' && (it.name === '共享池' || it.name === '项目' || it.name === '我的客户')) {
             it.meta.invisible = false
-          } else if(user.data.memberType === 'admin' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '铺源管理' || it.name === '设置')) {
+          } else if(user.data.memberType === 'admin' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '项目管理' || it.name === '设置')) {
             it.meta.invisible = false
-          } else if(user.data.memberType === 'backend' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '铺源管理' || it.name === '设置')) {
+          } else if(user.data.memberType === 'backend' && (it.name === '员工管理' || it.name === '客户管理' || it.name === '项目管理' || it.name === '设置')) {
             it.meta.invisible = false
           }  else {
             it.meta.invisible = true

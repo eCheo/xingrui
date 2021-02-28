@@ -5,8 +5,8 @@
         <div class="cas-content">
           <div class="cas-box">
             <div>
-              <span>业主名称：</span>
-              <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入业主名称" />
+              <span>项目名称：</span>
+              <a-input v-model="staffFrom.LIKE_name" style="width:75%;" placeholder="请输入项目名称" />
             </div>
             <div>
               <span>电话号码：</span>
@@ -51,7 +51,7 @@
                 @click="$router.push('/addshop')"
                 type="primary"
                 style="margin-left: 15px;"
-              >添加铺源</a-button>
+              >添加项目</a-button>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
             :data-source="staffData"
             
           >
-            <span slot="age" slot-scope="text, record">{{record.sex.message}}</span>
+            <!-- <span slot="age" slot-scope="text, record">{{record.sex.message}}</span> -->
             <span slot="isRent" slot-scope="isRent">{{isRent ? '是': '否'}}</span>
             <span slot="areaSize" slot-scope="text">{{text+' m²'}}</span>
             <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
@@ -85,7 +85,7 @@
                 @confirm="deleteShop(record)"
               >
                 <template slot="title">
-                  <p>是否要删除该铺源？</p>
+                  <p>是否要删除该项目？</p>
                 </template>
                 <a>删除</a>
               </a-popconfirm>
@@ -108,7 +108,7 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-model-item ref="name" label="业主名称" prop="name">
+        <a-form-model-item ref="name" label="项目名称" prop="name">
           <a-input
             style="width:150px;"
             v-model="form.name"
@@ -265,7 +265,7 @@ export default {
       },
       staffList: [
         {
-          title: '姓名',
+          title: '项目名称',
           dataIndex: 'name',
           key: 'name',
           width: 90
@@ -277,10 +277,10 @@ export default {
           width: 118
         },
         {
-          title: '性别',
-          dataIndex: 'age',
-          key: 'age',
-          scopedSlots: { customRender: 'age' },
+          title: '对接人',
+          dataIndex: 'faceToFaceName',
+          key: 'faceToFaceName',
+          scopedSlots: { customRender: 'faceToFaceName' },
           width: 70
         },
         {

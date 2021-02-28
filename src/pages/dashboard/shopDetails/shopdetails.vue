@@ -2,7 +2,7 @@
 <template>
   <div class="cus-top" style="margin-bottom:20px;">
     <a-form-model
-      style="width:700px"
+      style="width:466px"
       ref="ruleForm"
       :model="form"
       :rules="rules"
@@ -10,18 +10,94 @@
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <p>业主信息</p>
-      <a-form-model-item ref="name" label="业主名称" prop="name">
-        <a-input
-          style="width:150px"
-          v-model="form.name"
-          @blur="
+      <p>项目信息</p>
+      <a-form-model-item ref="name" label="项目名称" prop="name">
+          <a-input
+            style="width:150px"
+            v-model="form.name"
+            @blur="
               () => {
                 $refs.name.onFieldBlur();
               }
             "
-        />
-      </a-form-model-item>
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="faceToFaceName" label="对接人" prop="faceToFaceName">
+          <a-input
+            style="width:150px"
+            v-model="form.faceToFaceName"
+            @blur="
+              () => {
+                $refs.faceToFaceName.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="commission" label="佣金" prop="commission">
+          <a-input
+            style="width:150px"
+            suffix="元"
+            v-model="form.commission"
+            @blur="
+              () => {
+                $refs.commission.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
+        <a-form-model-item ref="cooperationTime" label="合作时间" prop="cooperationTime">
+          <a-date-picker :locale="locale"  v-model="form.cooperationTime" show-time placeholder="选择合作时间" @blur="
+              () => {
+                $refs.cooperationTime.onFieldBlur();
+              }
+            " @change="cooperationChange" />
+          <!-- <a-input
+            style="width:150px"
+            v-model="form.cooperationTime"
+            @blur="
+              () => {
+                $refs.cooperationTime.onFieldBlur();
+              }
+            "
+          /> -->
+        </a-form-model-item>
+        <a-form-model-item class="de-left" style="display:inline-block;" ref="rentFreePeriodStart" label="免租期" prop="rentFreePeriodStart">
+           <!-- <a-month-picker v-model="form.rentFreePeriodStart"
+           :locale="locale"
+            @blur="
+              () => {
+                $refs.rentFreePeriodStart.onFieldBlur();
+              }
+            " @change="rentStartChange"/> -->
+            <a-input
+              v-model="form.rentFreePeriodStart"
+              @blur="
+                () => {
+                  $refs.rentFreePeriodStart.onFieldBlur();
+                }
+              "
+            />
+        </a-form-model-item>
+        <span class="de-center">~</span>
+        <a-form-model-item class="de-right" ref="rentFreePeriodEnd" style="display:inline-block;" prop="rentFreePeriodEnd">
+          <!-- <a-month-picker v-model="form.rentFreePeriodEnd"
+           :locale="locale"
+            @blur="
+              () => {
+                $refs.rentFreePeriodEnd.onFieldBlur();
+              }
+            " @change="rentEndChange"/> -->
+            <a-input
+              style="width:79%"
+              v-model="form.rentFreePeriodEnd"
+              @blur="
+                () => {
+                  $refs.rentFreePeriodEnd.onFieldBlur();
+                }
+              "
+            />
+            月
+        </a-form-model-item>
       <a-form-model-item ref="phone" label="电话" prop="phone">
         <a-input
           style="width:150px"
@@ -195,6 +271,9 @@
 
 <script>
 import { request, METHOD } from '@/utils/request'
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import FooterToolBar from '@/components/tool/FooterToolBar'
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -221,10 +300,12 @@ export default {
     return {
       loading: true,
       butLoading: false,
+      moment,
+      locale,
       rules: {
         name: [
-          { required: true, message: '请输入业主名称', trigger: 'blur' },
-          { max: 5, message: '业主名称不能超过5个字', trigger: 'blur' }
+          { required: true, message: '请输入项目名称', trigger: 'blur' },
+          { max: 15, message: '项目名称不能超过15个字', trigger: 'blur' }
         ],
         phone: [{ required: true, validator: phoneValid, trigger: 'blur' }],
         sex: [
@@ -309,9 +390,27 @@ export default {
         remarks: [
           { required: true, message: '请输入备注', trigger: 'blur' },
           { max: 100, message: '备注不能超过100个字', trigger: 'blur' }
+        ],
+        faceToFaceName: [
+          { required: true, message: '请输入对接人姓名', trigger: 'blur' }
+        ],
+        commission: [
+          { required: true, message: '请输入佣金', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+        ],
+        cooperationTime: [
+          { required: true, message: '请选择合作时间', trigger: 'change' }
+        ],
+        rentFreePeriodStart: [
+          { required: true, message: '请输入免租期开始月份', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+        ],
+        rentFreePeriodEnd: [
+          { required: true, message: '请输入免租期结束月份', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ]
       },
-      labelCol: { span: 3 },
+      labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       form: {
         name: '',
@@ -329,7 +428,12 @@ export default {
         isRent: false,
         areaId: '',
         streetId: '',
-        remarks: ''
+        remarks: '',
+        faceToFaceName: '',
+        commission: '',
+        cooperationTime: '',
+        rentFreePeriodStart: null,
+        rentFreePeriodEnd: null
       },
       previewVisible: false,
       previewImage: '',
@@ -370,7 +474,9 @@ export default {
           
       }
       this.$refs.ruleForm.validate(valid => {
-        if (valid || this.form.imagePaths.length > 0) {
+        if (valid && this.form.imagePaths.length > 0) {
+          this.form.rentFreePeriodEnd = Number(this.form.rentFreePeriodEnd);
+          this.form.rentFreePeriodStart = Number(this.form.rentFreePeriodStart);
           this.butLoading = true
           request('/api/backend/shop/update.json', METHOD.POST, this.form).then(
             res => {
@@ -455,6 +561,15 @@ export default {
           this.$message.error(res.data.message);
         }
       })
+    },
+    rentEndChange(date, dateString) {
+      this.form.rentFreePeriodEnd = dateString;
+    },
+    rentStartChange(date, dateString) {
+      this.form.rentFreePeriodStart = dateString;
+    },
+    cooperationChange(date, dateString) {
+      this.form.cooperationTime = dateString;
     }
   },
   watch: {
@@ -500,3 +615,24 @@ export default {
   width: 100%;
 }
 </style>
+<style lang="less">
+.de-left {
+  width:200px;
+  .ant-col-4 {
+    width: 39%;
+  }
+  .ant-col-14 {
+    width: 59%;
+  }
+}
+.de-center {
+    display: inline-block;
+    margin: 8px 12px 8px 8px;
+}
+.de-right {
+  .ant-col-14 {
+    width: 64%;
+  }
+}
+</style>
+

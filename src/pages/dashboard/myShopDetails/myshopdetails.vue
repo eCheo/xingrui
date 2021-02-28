@@ -4,7 +4,19 @@
     <p>区域位置：{{form.area || '--'}}</p>
     <div class="cus-box">
       <div>
-        <span>业主姓名: {{form.name}}</span>
+        <span>项目名称: {{form.name}}</span>
+      </div>
+      <div>
+        <span>对接人: {{form.faceToFaceName}}</span>
+      </div>
+      <div>
+        <span>佣金: {{form.commission}}</span>
+      </div>
+      <div>
+        <span>合作时间: {{form.cooperationTime}}</span>
+      </div>
+      <div>
+        <span>免租期: {{form.rentFreePeriodStart}} ~ {{form.rentFreePeriodEnd}}</span>
       </div>
       <div>
         <span>性别: {{form.sex}}</span>
@@ -60,65 +72,12 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
-const phoneValid = (rule, value, callback) => {
-  let reg = /^[0-9]{11}$/
-  if (value === '') {
-    return callback(new Error('请输入手机号'))
-  } else if (!reg.test(value)) {
-    return callback(new Error('请输入正确的手机号'))
-  } else {
-    callback()
-  }
-}
 export default {
   name: 'customer',
   data () {
     return {
       loading: true,
       butLoading: false,
-      rules: {
-        name: [
-          { required: true, message: '请输入员工名称', trigger: 'blur' },
-          { max: 5, message: '员工名称不能超过5个字', trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, validator:phoneValid, trigger: 'blur' }
-        ],
-        sex: [{ required: true, message: 'Please pick a date', trigger: 'change' }],
-        areaSize: [
-          { required: true, message: '请输入面积', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        area: [
-          { required: true, message: '请输入地址', trigger: 'blur' },
-          { max: 50, message: '地址不能超过50个字', trigger: 'blur' }
-        ],
-        buildingHeight: [
-          { required: true, message: '请输入层高', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        floorHeight: [
-          { required: true, message: '请输入楼高', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        deepening: [
-          { required: true, message: '请输入进深', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        money: [
-          { required: true, message: '请输入租金', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        openRoom: [
-          { required: true, message: '请输入开间', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
-        ],
-        paymentMethod: [
-          { required: true, message: '请输入付款方式', trigger: 'blur' }
-        ]
-      },
-      labelCol: { span: 3 },
-      wrapperCol: { span: 14 },
       form: {
         name: '',
         phone: '',

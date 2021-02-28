@@ -64,7 +64,7 @@ const options = {
             },
             {
               path: 'shop',
-              name: '铺源管理',
+              name: '项目管理',
               meta: {
                 invisible: false,
                 icon: 'shop'
@@ -73,7 +73,7 @@ const options = {
             },
             {
               path: 'addshop',
-              name: '新增铺源',
+              name: '新增项目',
               meta: {
                 invisible: true
               },
@@ -81,7 +81,7 @@ const options = {
             },
             {
               path: 'shopdetails',
-              name: '编辑铺源',
+              name: '编辑项目',
               meta: {
                 invisible: true
               },
@@ -124,7 +124,7 @@ const options = {
             },
             {
               path: 'myshop',
-              name: '铺源',
+              name: '项目',
               meta: {
                 invisible: true,
                 icon: 'shop'
@@ -133,7 +133,7 @@ const options = {
             },
             {
               path: 'myshopdetails',
-              name: '铺源详情',
+              name: '项目详情',
               meta: {
                 invisible: true
               },
