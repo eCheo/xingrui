@@ -121,7 +121,7 @@ export default {
                 if (res.status === 200 && res.data.code === '200') {
                     this.butLoading = false
                     this.$message.success('修改成功')
-                    this.$router.push('/shop')
+                    this.$closePage('/shopdetails', '/myshop')
                 } else {
                     this.$message.error(res.data.message)
                     this.butLoading = false

@@ -411,10 +411,13 @@ export default {
                     this.butLoading = false
                     this.$message.success('添加成功');
                     if (this.memberType === 'front') {
-                      this.$router.push('/myshop');
+                      // this.$router.push('/myshop');
+                      this.$closePage('/addshop', '/myshop')
                     } else {
-                      this.$router.push('/shop');
+                      // this.$router.push('/shop');
+                      this.$closePage('/addshop', '/shop')
                     }
+                    
                 } else {
                     this.$message.error(res.data.message)
                     this.butLoading = false
