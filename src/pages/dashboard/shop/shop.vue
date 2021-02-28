@@ -130,12 +130,12 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item label="性别" prop="sex">
+        <!-- <a-form-model-item label="性别" prop="sex">
           <a-radio-group v-model="form.sex" style="width:150px;">
             <a-radio value="Man">男</a-radio>
             <a-radio value="WoMan">女</a-radio>
           </a-radio-group>
-        </a-form-model-item>
+        </a-form-model-item> -->
         <a-form-model-item ref="areaSize" label="面积" prop="areaSize">
           <a-input
             v-model="form.areaSize"
@@ -342,9 +342,9 @@ export default {
           { max: 5, message: '业主名称不能超过5个字', trigger: 'blur' }
         ],
         phone: [{ required: true, validator: phoneValid, trigger: 'blur' }],
-        sex: [
-          { required: true, message: 'Please pick a date', trigger: 'change' }
-        ],
+        // sex: [
+        //   { required: true, message: 'Please pick a date', trigger: 'change' }
+        // ],
         areaSize: [
           { required: true, message: '请输入面积', trigger: 'blur' },
           {
@@ -427,7 +427,7 @@ export default {
       form: {
         name: '',
         phone: '',
-        sex: 'Man',
+        // sex: 'Man',
         areaSize: '',
         area: '',
         buildingHeight: '',
@@ -528,7 +528,7 @@ export default {
       this.editType = 'add'
       this.editModal = true
       for (let key in this.form) {
-        if (key !== 'sex') this.form[key] = ''
+        // if (key !== 'sex') this.form[key] = ''
         if (key === 'id') delete this.form[key]
       }
     },

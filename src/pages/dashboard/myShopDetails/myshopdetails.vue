@@ -18,9 +18,9 @@
       <div>
         <span>免租期: {{form.rentFreePeriodStart}} ~ {{form.rentFreePeriodEnd}}</span>
       </div>
-      <div>
+      <!-- <div>
         <span>性别: {{form.sex}}</span>
-      </div>
+      </div> -->
       <div>
         <span>电话号码: {{form.phone}}</span>
       </div>
@@ -81,7 +81,7 @@ export default {
       form: {
         name: '',
         phone: '',
-        sex: 'Man',
+        // sex: 'Man',
         areaSize: '',
         area: '',
         buildingHeight: '',
@@ -166,7 +166,7 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.form = res.data.data;
-          this.form.sex = res.data.data.sex.message;
+          // this.form.sex = res.data.data.sex.message;
           let obj = {}
           this.form.imagePaths.forEach((item, index) => {
             obj.status = 'done'
