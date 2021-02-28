@@ -137,12 +137,12 @@ export default {
           key: 'inputCustomerNumberMonth'
         },
         {
-          title: '本月录入铺源数',
+          title: '本月录入项目数',
           dataIndex: 'inputShopNumberMonth',
           key: 'inputShopNumberMonth'
         },
         {
-          title: '总录入铺源数',
+          title: '总录入项目数',
           dataIndex: 'inputShopNumber',
           key: 'inputShopNumber'
         },
