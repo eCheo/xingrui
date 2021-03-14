@@ -71,6 +71,7 @@
             <span slot="deepening" slot-scope="text">{{text+ '米'}}</span>
             <span slot="openRoom" slot-scope="text">{{text+ '米'}}</span>
             <span slot="buildingHeight" slot-scope="text">{{text+ '米'}}</span>
+            <!-- <span slot="money" slot-scope="text,record">{{record.money+ '元~'+record.moneyEnd+}}</span> -->
             <span slot="areaName" slot-scope="text, record">{{record.areaName+ ' ' + record.streetName}}</span>
             <span slot="action" slot-scope="text, record">
               <a @click="goDetails(record)">编辑</a>
@@ -301,7 +302,8 @@ export default {
           title: '租金(元)',
           dataIndex: 'money',
           key: 'money',
-          width: 100
+          width: 100,
+          scopedSlots: { customRender: 'money' }
         },
         {
           title: '付款方式',

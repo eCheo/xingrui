@@ -36,7 +36,7 @@
         <a-form-model-item ref="commission" label="佣金" prop="commission">
           <a-input
             style="width:150px"
-            suffix="元"
+            suffix="元/月"
             v-model="form.commission"
             @blur="
               () => {
@@ -45,12 +45,20 @@
             "
           />
         </a-form-model-item>
-        <a-form-model-item ref="cooperationTime" label="合作时间" prop="cooperationTime">
-          <a-date-picker :locale="locale"  v-model="form.cooperationTime" placeholder="选择合作时间" @blur="
+        <a-form-model-item class="de-left" style="display:inline-block;" ref="cooperationTime" label="合作时间" prop="cooperationTime">
+            <a-date-picker :locale="locale" v-model="form.cooperationTime"  @blur="
               () => {
                 $refs.cooperationTime.onFieldBlur();
               }
             " @change="cooperationChange" />
+        </a-form-model-item>
+        <span class="de-center">~</span>
+        <a-form-model-item class="de-left" style="display:inline-block;" ref="cooperationTimeEnd" prop="cooperationTimeEnd">
+            <a-date-picker :locale="locale" v-model="form.cooperationTimeEnd"  @blur="
+              () => {
+                $refs.cooperationTimeEnd.onFieldBlur();
+              }
+            " @change="cooperationEndChange" />
         </a-form-model-item>
         <a-form-model-item class="de-left" style="display:inline-block;" ref="rentFreePeriodStart" label="免租期" prop="rentFreePeriodStart">
            <!-- <a-month-picker v-model="form.rentFreePeriodStart"
@@ -202,18 +210,29 @@
         />
       </a-form-model-item>
       <p>租金信息</p>
-      <a-form-model-item ref="money" label="租金" prop="money">
-        <a-input
-          suffix="元"
-          style="width:150px"
-          v-model="form.money"
-          @blur="
+      <a-form-model-item class="de-left" style="display:inline-block;" ref="money" label="租金" prop="money">
+          <a-input
+            suffix="元"
+            v-model="form.money"
+            @blur="
               () => {
                 $refs.money.onFieldBlur();
               }
             "
-        />
-      </a-form-model-item>
+          />
+        </a-form-model-item>
+        <span class="de-center">~</span>
+        <a-form-model-item class="de-right" style="display:inline-block;" ref="moneyEnd" prop="moneyEnd">
+          <a-input
+            suffix="元"
+            v-model="form.moneyEnd"
+            @blur="
+              () => {
+                $refs.moneyEnd.onFieldBlur();
+              }
+            "
+          />
+        </a-form-model-item>
       <a-form-model-item ref="paymentMethod" label="付款方式" prop="paymentMethod">
         <a-input
           style="width:150px"
@@ -319,36 +338,36 @@ export default {
         ],
         buildingHeight: [
           { required: true, message: '请输入层高', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '只能输入数字',
-            transform: value => {
-              return Number(value)
-            },
-            trigger: 'blur'
-          }
+          // {
+          //   type: 'number',
+          //   message: '只能输入数字',
+          //   transform: value => {
+          //     return Number(value)
+          //   },
+          //   trigger: 'blur'
+          // }
         ],
         floorHeight: [
           { required: true, message: '请输入楼高', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '只能输入数字',
-            transform: value => {
-              return Number(value)
-            },
-            trigger: 'blur'
-          }
+          // {
+          //   type: 'number',
+          //   message: '只能输入数字',
+          //   transform: value => {
+          //     return Number(value)
+          //   },
+          //   trigger: 'blur'
+          // }
         ],
         deepening: [
           { required: true, message: '请输入进深', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '只能输入数字',
-            transform: value => {
-              return Number(value)
-            },
-            trigger: 'blur'
-          }
+          // {
+          //   type: 'number',
+          //   message: '只能输入数字',
+          //   transform: value => {
+          //     return Number(value)
+          //   },
+          //   trigger: 'blur'
+          // }
         ],
         money: [
           { required: true, message: '请输入租金', trigger: 'blur' },
@@ -361,16 +380,20 @@ export default {
             trigger: 'blur'
           }
         ],
+        moneyEnd: [
+          { required: true, message: '请输入租金', trigger: 'blur' },
+          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+        ],
         openRoom: [
           { required: true, message: '请输入开间', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '只能输入数字',
-            transform: value => {
-              return Number(value)
-            },
-            trigger: 'blur'
-          }
+          // {
+          //   type: 'number',
+          //   message: '只能输入数字',
+          //   transform: value => {
+          //     return Number(value)
+          //   },
+          //   trigger: 'blur'
+          // }
         ],
         paymentMethod: [
           { required: true, message: '请输入付款方式', trigger: 'blur' }
@@ -387,9 +410,12 @@ export default {
         ],
         commission: [
           { required: true, message: '请输入佣金', trigger: 'blur' },
-          {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
+          // {type: 'number', message: '只能输入数字',transform: (value) => {return Number(value)}, trigger: 'blur'}
         ],
         cooperationTime: [
+          { required: true, message: '请选择合作时间', trigger: 'change' }
+        ],
+        cooperationTimeEnd: [
           { required: true, message: '请选择合作时间', trigger: 'change' }
         ],
         rentFreePeriodStart: [
@@ -416,15 +442,16 @@ export default {
         openRoom: '',
         paymentMethod: '',
         imagePaths: [],
-        isRent: false,
         areaId: '',
         streetId: '',
         remarks: '',
         faceToFaceName: '',
         commission: '',
         cooperationTime: '',
+        cooperationTimeEnd: '',
         rentFreePeriodStart: null,
-        rentFreePeriodEnd: null
+        rentFreePeriodEnd: null,
+        moneyEnd: ''
       },
       previewVisible: false,
       previewImage: '',
@@ -561,7 +588,10 @@ export default {
     },
     cooperationChange(date, dateString) {
       this.form.cooperationTime = dateString;
-    }
+    },
+    cooperationEndChange(date, dateString) {
+      this.form.cooperationEndChange = dateString;
+    },
   },
   watch: {
     $route: {

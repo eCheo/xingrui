@@ -10,13 +10,13 @@
         <span>对接人: {{form.faceToFaceName}}</span>
       </div>
       <div>
-        <span>佣金: {{form.commission}}</span>
+        <span>佣金: {{form.commission}}元/月</span>
       </div>
       <div>
-        <span>合作时间: {{form.cooperationTime}}</span>
+        <span>合作时间: {{form.cooperationTime}}~{{form.cooperationTimeEnd}}</span>
       </div>
       <div>
-        <span>免租期: {{form.rentFreePeriodStart}} ~ {{form.rentFreePeriodEnd}}</span>
+        <span>免租期: {{form.rentFreePeriodStart}} ~ {{form.rentFreePeriodEnd}}月</span>
       </div>
       <!-- <div>
         <span>性别: {{form.sex}}</span>
@@ -166,7 +166,8 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.code === '200') {
           this.form = res.data.data;
-          // this.form.sex = res.data.data.sex.message;
+          this.form.cooperationTime = res.data.data.cooperationTime.substring(0,res.data.data.cooperationTime.indexOf(' '));
+          this.form.cooperationTimeEnd = res.data.data.cooperationTimeEnd.substring(0,res.data.data.cooperationTimeEnd.indexOf(' '));
           let obj = {}
           this.form.imagePaths.forEach((item, index) => {
             obj.status = 'done'
