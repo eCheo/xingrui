@@ -43,7 +43,7 @@
         <span>面积大小: {{form.areaSize}}m²</span>
       </div>
       <div>
-        <span>租金: {{form.money}}元</span>
+        <span>租金: {{form.money}}元~{{form.moneyEnd}}元</span>
       </div>
       <div>
         <span>付款方式: {{form.paymentMethod}}</span>
@@ -52,7 +52,7 @@
         <span>是否已租: {{!form.isRent ? '未租' : '已租'}}</span>
       </div>
       <div>
-        <span>备注：{{form.remarks}}</span>
+        <p style="word-break: break-all;">备注：{{form.remarks}}</p>
       </div>
     </div>
     <div class="cus-img">
